@@ -1,0 +1,39 @@
+"use client";
+
+import { useEffect, useRef } from "react";
+
+export function ScrollProgress() {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const bar = ref.current;
+    if (!bar) return;
+
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      bar.hidden = true;
+      return;
+    }
+
+    let frame = 0;
+    const update = () => {
+      const max = document.documentElement.scrollHeight - window.innerHeight;
+      const progress = max > 0 ? Math.min(1, window.scrollY / max) : 0;
+      bar.style.transform = `scaleX(${progress})`;
+    };
+    const onScroll = () => {
+      cancelAnimationFrame(frame);
+      frame = requestAnimationFrame(update);
+    };
+
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll);
+    return () => {
+      cancelAnimationFrame(frame);
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+    };
+  }, []);
+
+  return <div ref={ref} className="scroll-progress" aria-hidden="true" />;
+}
