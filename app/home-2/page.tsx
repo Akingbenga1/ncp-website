@@ -32,7 +32,7 @@ export default function HomeTwoPage() {
           <p className="hero-immersion-kicker">In the heart of</p>
           <h1 id="home2-heading">Peterborough &amp; beyond</h1>
           <p className="hero-immersion-lead">
-            A home for Nigerians living in the UK — connected, proud, and
+            A home for Nigerians living in Peterborough, UK — connected, proud, and
             looking forward together.
           </p>
           <Link className="btn btn-primary hero-immersion-cta" href="/about">

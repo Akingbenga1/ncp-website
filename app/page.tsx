@@ -12,11 +12,28 @@ export const metadata: Metadata = {
   title: "Home",
 };
 
+const WHATSAPP_GROUP_URL = "https://chat.whatsapp.com/";
+
 const heroQuickLinks = [
   { href: "#donation", label: "Donation" },
   { href: "#events-news", label: "Events" },
   { href: "/get-involved", label: "Enquireies" },
 ] as const;
+
+const homePeopleCarouselStatements = [
+  "Your story belongs here — come as you are and find your place among neighbours who understand you and your family.",
+  "Find factual information fast such as accommodation, locations , friends and connections",
+  "From first hello to lifelong friendship — this is where connections in Peterborough begin.",
+  "Share your gifts, your culture, your time — the community grows stronger when you take part.",
+  "New in town or already living here — there is always room for one more at the table.",
+  "Get connected to useful Businesses and advertise your business also. From  African shops, trades, Professional services and more",
+  "Together we celebrate, support, and look forward — get involved and help shape what NCP becomes.",
+] as const;
+
+const homePeopleCarouselSlides = communityPortraitSlides.map((slide, index) => ({
+  ...slide,
+  alt: homePeopleCarouselStatements[index] ?? slide.alt,
+}));
 
 export default function HomePage() {
   return (
@@ -37,12 +54,17 @@ export default function HomePage() {
           <p className="hero-immersion-kicker">In the heart of</p>
           <h1 id="home2-heading">Peterborough &amp; beyond</h1>
           <p className="hero-immersion-lead">
-            A home for Nigerians living in the UK — connected, proud, and
+            A home for Nigerians living in Peterborough, UK — connected, proud, and
             looking forward together.
           </p>
-          <Link className="btn btn-primary hero-immersion-cta" href="/about">
-            About us
-          </Link>
+          <a
+            className="btn btn-primary hero-immersion-cta"
+            href={WHATSAPP_GROUP_URL}
+            rel="noopener noreferrer"
+            target="_blank"
+          >
+            Join Whatsapp Group
+          </a>
           <nav
             className="hero-variant-nav hero-variant-nav--light"
             aria-label="Quick links"
@@ -71,7 +93,7 @@ export default function HomePage() {
             <div className="wrap home2-community-grid">
               <div className="home2-glass home2-community-copy">
                 <p className="kicker">Our people</p>
-                <h2>Modern. Joyful. Rooted here.</h2>
+                <h2>Mordern, Cultural and Forward thinking Community</h2>
                 <p className="section-lead">
                   Families, friends, and professionals building life in the UK
                   while carrying Nigerian warmth into every gathering.
@@ -81,7 +103,7 @@ export default function HomePage() {
                 </Link>
               </div>
               <CommunityCarousel
-                slides={[...communityPortraitSlides]}
+                slides={[...homePeopleCarouselSlides]}
                 className="home2-people-carousel"
                 intervalMs={4800}
                 showCaptions
