@@ -20,6 +20,13 @@ dist/
 # Env / secrets
 .env
 .env*.local
+cms/.env
+cms/.tmp/
+cms/.cache/
+cms/build/
+cms/dist/
+cms/public/uploads/
+*.db
 
 # Debug / logs
 npm-debug.log*

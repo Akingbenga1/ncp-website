@@ -22,17 +22,17 @@ const features: Feature[] = [
     title: "Register and belong",
     lead:
       "Create your free NCP account, stay close to community life in Peterborough, and show up as a member, volunteer, or neighbour who wants to be part of what we build next.",
-    cta: { label: "Start membership", href: "/get-involved" },
+    cta: { label: "Get involved", href: "/get-involved" },
     photo: communityPhotos.handsUnity,
     align: "left",
   },
   {
     id: "directory",
-    kicker: "Business & community directory",
+    kicker: "Market directory",
     title: "Find your people — and local places",
     lead:
-      "A living Market of Nigerian-owned and Nigerian-serving businesses, churches, associations, and services around Peterborough — so support, trade, and trust stay in the community.",
-    cta: { label: "Explore the idea", href: "/about" },
+      "Browse Nigerian-owned and Nigerian-serving businesses, churches, associations, and services around Peterborough — so support, trade, and trust stay in the community.",
+    cta: { label: "Browse the Market", href: "/market" },
     photo: communityPhotos.ukStreetMarket,
     align: "right",
   },
@@ -41,8 +41,8 @@ const features: Feature[] = [
     kicker: "Donation",
     title: "Give so the work continues",
     lead:
-      "A secure donation facility to fund gatherings, welcome, and the everyday work of connecting Nigerian families and friends here — one gift at a time.",
-    cta: { label: "Support NCP", href: "/get-involved" },
+      "Support gatherings, welcome, and the everyday work of connecting Nigerian families and friends here — one gift at a time, securely and transparently.",
+    cta: { label: "Donate", href: "/donation" },
     photo: communityPhotos.claspedHands,
     align: "left",
   },
@@ -52,7 +52,7 @@ const features: Feature[] = [
     title: "Stay informed. Stay together.",
     lead:
       "Community events, announcements, and stories in one place — so you never miss the gathering, the update, or the moment that brings us closer.",
-    cta: { label: "Get involved", href: "/get-involved" },
+    cta: { label: "See events", href: "/events" },
     photo: communityPhotos.heritageCelebration,
     align: "right",
   },
@@ -116,10 +116,10 @@ export function Home2FeatureFlow() {
       <header ref={introRef} className="home2-features-intro wrap">
         <div className="home2-glass home2-features-intro-panel">
           <p className="kicker">On this digital home</p>
-          <h2>Ways we connect, inform, and grow</h2>
+          <h2>Ways we connect, inform, and engage</h2>
           <p className="section-lead">
-            Four parts of NCP you will meet on the site — introduced here, ready
-            for the community to use.
+            Membership, Market, Donation, and Events &amp; news — the core of
+            NCP online, ready for the community to use.
           </p>
         </div>
       </header>

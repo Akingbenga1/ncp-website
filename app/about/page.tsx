@@ -4,9 +4,12 @@ import { CommunityPhoto } from "@/components/CommunityPhoto";
 import { Pillars } from "@/components/Pillars";
 import { Reveal } from "@/components/Reveal";
 import { communityPhotos } from "@/data/pixabay-credits";
+import { siteContact } from "@/data/site-contact";
 
 export const metadata: Metadata = {
   title: "About",
+  description:
+    "Who Nigerian Community Peterborough is — mission, pillars, and how to reach Theresa and the EXCO line.",
 };
 
 export default function AboutPage() {
@@ -29,10 +32,25 @@ export default function AboutPage() {
         </div>
       </header>
 
-      <section className="section section-overlap" aria-labelledby="mission-heading">
+      <Reveal as="section" className="section section-overlap" variant="up">
+        <div className="wrap about-mission">
+          <div className="home2-glass about-mission-panel">
+            <p className="kicker">Our mission</p>
+            <h2 className="section-title">Connect. Inform. Engage.</h2>
+            <p className="section-lead">
+              We exist so Nigerian families and friends building life in the UK
+              have a clear public home — not only a forwarded WhatsApp thread.
+              NCP represents who we are today and where we are going: rooted in
+              Peterborough, open to the wider diaspora.
+            </p>
+          </div>
+        </div>
+      </Reveal>
+
+      <section className="section" aria-labelledby="mission-pillars-heading">
         <div className="wrap">
-          <h2 id="mission-heading" className="visually-hidden">
-            Our mission
+          <h2 id="mission-pillars-heading" className="visually-hidden">
+            Mission pillars
           </h2>
           <div className="point-grid">
             <Reveal as="article" className="point-card" variant="up" delay={0}>
@@ -72,6 +90,42 @@ export default function AboutPage() {
           <Pillars heading="h3" />
         </div>
       </Reveal>
+
+      <section
+        className="section about-contact"
+        aria-labelledby="about-contact-heading"
+      >
+        <div className="wrap">
+          <Reveal className="home2-glass about-contact-panel" variant="up">
+            <p className="kicker">Talk to us</p>
+            <h2 id="about-contact-heading" className="section-title">
+              Contact
+            </h2>
+            <p className="section-lead">
+              Reach the organisation through Theresa or the EXCO line — the same
+              public contacts from our community flyer.
+            </p>
+            <dl className="about-contact-list">
+              <div>
+                <dt>Contact</dt>
+                <dd>{siteContact.contactName}</dd>
+              </div>
+              <div>
+                <dt>Email</dt>
+                <dd>
+                  <a href={siteContact.emailHref}>{siteContact.email}</a>
+                </dd>
+              </div>
+              <div>
+                <dt>{siteContact.excoLabel}</dt>
+                <dd>
+                  <a href={siteContact.phoneHref}>{siteContact.phoneDisplay}</a>
+                </dd>
+              </div>
+            </dl>
+          </Reveal>
+        </div>
+      </section>
 
       <Reveal as="section" className="cta-band" variant="up">
         <div className="wrap cta-band-inner">

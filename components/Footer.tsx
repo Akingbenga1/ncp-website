@@ -27,16 +27,6 @@ export function Footer() {
           </p>
         </div>
         <div className="footer-credits">
-          <p className="footer-label">Hero variants</p>
-          <p>
-            <Link href="/">Home 1</Link>
-            {" · "}
-            <Link href="/home-2">Home 2</Link>
-            {" · "}
-            <Link href="/home-3">Home 3</Link>
-            {" · "}
-            <Link href="/home-4">Home 4</Link>
-          </p>
           <p className="footer-label">Imagery</p>
           <p>
             Community photos from{" "}
@@ -48,6 +38,13 @@ export function Footer() {
               Pixabay
             </a>{" "}
             (Content License).
+          </p>
+          <p className="footer-nav-note">
+            <Link href="/about">About</Link>
+            {" · "}
+            <Link href="/get-involved">Get involved</Link>
+            {" · "}
+            <Link href="/donation">Donation</Link>
           </p>
         </div>
       </div>

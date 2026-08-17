@@ -39,6 +39,7 @@ export default function RootLayout({
       lang="en"
       data-scroll-behavior="smooth"
       className={`${montserrat.variable} ${openSans.variable}`}
+      suppressHydrationWarning
     >
       <body>
         <ScrollProgress />

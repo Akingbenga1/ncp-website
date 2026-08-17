@@ -1,11 +1,40 @@
 import type { Metadata } from "next";
+import Link from "next/link";
 import { CommunityPhoto } from "@/components/CommunityPhoto";
+import { MembershipEnquiryForm } from "@/components/MembershipEnquiryForm";
 import { Reveal } from "@/components/Reveal";
 import { communityPhotos } from "@/data/pixabay-credits";
+import { siteContact } from "@/data/site-contact";
 
 export const metadata: Metadata = {
   title: "Get involved",
+  description:
+    "Join Nigerian Community Peterborough as a member, volunteer, or supporter — enquire or donate.",
 };
+
+const paths = [
+  {
+    index: "01",
+    title: "Member",
+    body: "Join the community and stay in the loop with what NCP is doing.",
+    href: "#membership-enquiry",
+    cta: "Start enquiry",
+  },
+  {
+    index: "02",
+    title: "Volunteer",
+    body: "Give time — events, welcome, and the work that keeps people together.",
+    href: "#membership-enquiry",
+    cta: "Offer to help",
+  },
+  {
+    index: "03",
+    title: "Support",
+    body: "Donate so the organisation can keep a public home for the community.",
+    href: "/donation",
+    cta: "Go to donation",
+  },
+] as const;
 
 export default function GetInvolvedPage() {
   return (
@@ -33,93 +62,62 @@ export default function GetInvolvedPage() {
             Ways to take part
           </h2>
           <div className="point-grid">
-            <Reveal as="article" className="point-card" variant="up" delay={0}>
-              <span className="pillar-index">01</span>
-              <h3>Member</h3>
-              <p>Join the community and stay in the loop with what NCP is doing.</p>
-            </Reveal>
-            <Reveal as="article" className="point-card" variant="up" delay={120}>
-              <span className="pillar-index">02</span>
-              <h3>Volunteer</h3>
-              <p>Give time — events, welcome, and the work that keeps people together.</p>
-            </Reveal>
-            <Reveal as="article" className="point-card" variant="up" delay={240}>
-              <span className="pillar-index">03</span>
-              <h3>Support</h3>
-              <p>Donate so the organisation can keep a public home for the community.</p>
-            </Reveal>
+            {paths.map((path, i) => (
+              <Reveal
+                as="article"
+                className="point-card"
+                variant="up"
+                delay={i * 120}
+                key={path.title}
+              >
+                <span className="pillar-index">{path.index}</span>
+                <h3>{path.title}</h3>
+                <p>{path.body}</p>
+                <Link className="btn btn-solid involve-path-cta" href={path.href}>
+                  {path.cta}
+                </Link>
+              </Reveal>
+            ))}
           </div>
         </div>
       </section>
 
-      <section className="section">
+      <section className="section" aria-labelledby="enquiry-heading">
         <div className="wrap split split-form">
           <Reveal className="card form-card" variant="left">
-            <h2>Membership enquiry</h2>
-            <p className="form-note">
-              Design preview — this form does not send.
-            </p>
-            <form className="form" action="#" method="get">
-              <label htmlFor="full-name">
-                Full name
-                <input id="full-name" name="name" type="text" autoComplete="name" />
-              </label>
-              <label htmlFor="email">
-                Email
-                <input
-                  id="email"
-                  name="email"
-                  type="email"
-                  autoComplete="email"
-                  inputMode="email"
-                />
-              </label>
-              <label htmlFor="phone">
-                Phone
-                <input
-                  id="phone"
-                  name="phone"
-                  type="tel"
-                  autoComplete="tel"
-                  inputMode="tel"
-                />
-              </label>
-              <label htmlFor="message">
-                Message
-                <textarea id="message" name="message" rows={5} />
-              </label>
-              <button className="btn btn-solid" type="button">
-                Send enquiry
-              </button>
-            </form>
+            <div id="membership-enquiry">
+              <h2 id="enquiry-heading">Membership enquiry</h2>
+              <p className="form-note">
+                Registration and enquiry delivery will use the membership and
+                mail ports when those flows go live. Until then, email Theresa or
+                call the EXCO line — this form never pretends a message was sent.
+              </p>
+              <MembershipEnquiryForm />
+            </div>
           </Reveal>
 
           <Reveal className="side-stack side-sticky" variant="right" delay={140}>
             <div className="card donate-block">
               <h2>Donate</h2>
               <p>
-                Support the work of Nigerian Community Peterborough. Giving
-                will be connected on the live site.
+                Support the work of Nigerian Community Peterborough. Card and
+                bank options live on the donation page — wired through the
+                payment port when live, never a disabled button here.
               </p>
-              <p className="form-note">
-                Design preview — this does not take payment.
-              </p>
-              <button className="btn btn-primary" type="button">
-                Donate
-              </button>
+              <Link className="btn btn-primary" href="/donation">
+                Donation
+              </Link>
             </div>
 
             <div className="card contact-block">
               <h2>Talk to us</h2>
-              <p>Theresa Okogwa</p>
+              <p>{siteContact.contactName}</p>
               <p>
-                <a href="mailto:theresa.okogwa@naijacp.co.uk">
-                  theresa.okogwa@naijacp.co.uk
-                </a>
+                <a href={siteContact.emailHref}>{siteContact.email}</a>
               </p>
               <p>
-                NCP EXCO LINE:{" "}
-                <a href="tel:+447737742387">+44 7737 742387</a>
+                {siteContact.excoLabel}:{" "}
+                <a href={siteContact.phoneHref}>{siteContact.phoneDisplay}</a>
               </p>
             </div>
           </Reveal>

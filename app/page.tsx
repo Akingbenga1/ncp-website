@@ -10,12 +10,14 @@ import {
 
 export const metadata: Metadata = {
   title: "Home",
+  description:
+    "Nigerian Community Peterborough — connect, inform, and engage with Nigerian families and friends in Peterborough and beyond.",
 };
 
 const heroQuickLinks = [
-  { href: "#donation", label: "Donation" },
-  { href: "#events-news", label: "Events" },
-  { href: "/get-involved", label: "Enquireies" },
+  { href: "/donation", label: "Donation" },
+  { href: "/events", label: "Events" },
+  { href: "/get-involved", label: "Enquiries" },
 ] as const;
 
 export default function HomePage() {
@@ -34,11 +36,13 @@ export default function HomePage() {
         </div>
 
         <div className="hero-immersion-content">
-          <p className="hero-immersion-kicker">In the heart of</p>
+          <p className="hero-immersion-kicker">
+            Nigerian Community Peterborough
+          </p>
           <h1 id="home2-heading">Peterborough &amp; beyond</h1>
           <p className="hero-immersion-lead">
-            A home for Nigerians living in the UK — connected, proud, and
-            looking forward together.
+            Our digital home to connect, inform, and engage — uniting Nigerian
+            families and friends across Peterborough and the wider UK.
           </p>
           <Link className="btn btn-primary hero-immersion-cta" href="/about">
             About us
@@ -71,10 +75,11 @@ export default function HomePage() {
             <div className="wrap home2-community-grid">
               <div className="home2-glass home2-community-copy">
                 <p className="kicker">Our people</p>
-                <h2>Modern. Joyful. Rooted here.</h2>
+                <h2>Community. Culture. Connection.</h2>
                 <p className="section-lead">
                   Families, friends, and professionals building life in the UK
-                  while carrying Nigerian warmth into every gathering.
+                  while carrying Nigerian warmth into every gathering — from
+                  Peterborough to the wider diaspora.
                 </p>
                 <Link className="btn btn-primary" href="/get-involved">
                   Get involved
@@ -95,10 +100,11 @@ export default function HomePage() {
             <div className="wrap">
               <div className="home2-glass home2-close-inner">
                 <p className="kicker">Be part of it</p>
-                <h2>This community is built in person — and online</h2>
+                <h2>Built face to face — strengthened online</h2>
                 <p className="section-lead">
-                  NCP’s digital home is here to connect, inform, and engage. Join
-                  in, find your people, and help the work grow.
+                  NCP’s website is here so you can find events and news, explore
+                  the Market directory, give to the work, and take the first step
+                  to join or enquire.
                 </p>
                 <Link className="btn btn-primary" href="/get-involved">
                   Get involved
