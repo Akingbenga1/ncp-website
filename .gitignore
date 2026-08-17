@@ -33,3 +33,7 @@ next-env.d.ts
 
 # Vercel
 .vercel
+
+cms/node_modules/
+cms/.next/
+cms/.env
