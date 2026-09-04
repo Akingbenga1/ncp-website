@@ -1,11 +1,14 @@
 import type { PaymentPort } from "@/lib/ports/payment-port";
 
-/** No-op PaymentPort until Stripe adapter is wired. */
+/** No-op PaymentPort when payment adapters are not configured. */
 export const noopPaymentAdapter: PaymentPort = {
-  async createDonationSession() {
-    throw new Error("PaymentPort: createDonationSession not configured");
+  async createCheckout() {
+    throw new Error("PaymentPort: createCheckout not configured");
   },
   async getBankTransferDetails() {
+    return null;
+  },
+  async getCharityIdentity() {
     return null;
   },
 };

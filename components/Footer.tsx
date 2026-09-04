@@ -1,31 +1,55 @@
 import Link from "next/link";
+import {
+  publishedSocialLinks,
+  siteContact,
+} from "@/data/site-contact";
 
 export function Footer() {
+  const socialLinks = publishedSocialLinks();
+
   return (
     <footer className="site-footer">
-      <div className="wrap footer-grid">
+      <div
+        className={`wrap footer-grid${socialLinks.length > 0 ? " footer-grid--with-social" : ""}`}
+      >
         <div>
           <p className="footer-label">Organisation</p>
           <p>
-            <strong>Nigerian Community Peterborough</strong>
+            <strong>{siteContact.organisation}</strong>
           </p>
-          <p>Community. Culture. Connection.</p>
+          <p>{siteContact.tagline}</p>
         </div>
         <div>
           <p className="footer-label">Contact</p>
-          <p>Theresa Okogwa</p>
+          <p>{siteContact.contactName}</p>
           <p>
-            <a href="mailto:theresa.okogwa@naijacp.co.uk">
-              theresa.okogwa@naijacp.co.uk
-            </a>
+            <a href={siteContact.emailHref}>{siteContact.email}</a>
           </p>
         </div>
         <div>
-          <p className="footer-label">EXCO line</p>
+          <p className="footer-label">{siteContact.excoLabel}</p>
           <p>
-            <a href="tel:+447737742387">+44 7737 742387</a>
+            <a href={siteContact.phoneHref}>{siteContact.phoneDisplay}</a>
           </p>
         </div>
+        {socialLinks.length > 0 ? (
+          <div>
+            <p className="footer-label">Follow</p>
+            <ul className="footer-social">
+              {socialLinks.map((link) => (
+                <li key={link.id}>
+                  <a
+                    href={link.href}
+                    rel="noopener noreferrer"
+                    target="_blank"
+                  >
+                    {link.label}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </div>
+        ) : null}
         <div className="footer-credits">
           <p className="footer-label">Imagery</p>
           <p>
@@ -45,6 +69,10 @@ export function Footer() {
             <Link href="/get-involved">Get involved</Link>
             {" · "}
             <Link href="/donation">Donation</Link>
+            {" · "}
+            <Link href="/privacy">Privacy</Link>
+            {" · "}
+            <Link href="/cookies">Cookies</Link>
           </p>
         </div>
       </div>

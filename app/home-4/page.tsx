@@ -10,6 +10,7 @@ import { communityPhotos } from "@/data/pixabay-credits";
 
 export const metadata: Metadata = {
   title: "Home 4",
+  robots: { index: false, follow: false },
 };
 
 const heroSlides: HeroSlide[] = [

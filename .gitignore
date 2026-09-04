@@ -19,6 +19,10 @@ dist/
 
 # Env / secrets
 .env
+.env.*
+!.env.example
+!cms/.env.example
+!deploy/.env.prod.example
 .env*.local
 cms/.env
 cms/.tmp/
@@ -27,6 +31,15 @@ cms/build/
 cms/dist/
 cms/public/uploads/
 *.db
+*.sqlite
+*.sqlite3
+
+# Certs / keys
+*.pem
+*.p12
+
+# Deploy secrets (keep examples tracked)
+deploy/.env*
 
 # Debug / logs
 npm-debug.log*
@@ -34,9 +47,18 @@ yarn-debug.log*
 yarn-error.log*
 *.log
 
+# Caches / test output
+.turbo/
+.eslintcache
+coverage/
+.nyc_output/
+playwright-report/
+test-results/
+
 # TypeScript
 *.tsbuildinfo
 next-env.d.ts
 
 # Vercel
 .vercel
+/Sprints

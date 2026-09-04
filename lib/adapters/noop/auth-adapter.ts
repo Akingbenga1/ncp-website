@@ -12,8 +12,10 @@ export const noopAuthAdapter: AuthPort = {
   async getSession() {
     return null;
   },
-  async requestPasswordReset() {},
-  async confirmPasswordReset() {
+  async requestPasswordReset() {
+    return {};
+  },
+  async resetPassword() {
     throw new Error("AuthPort: password reset not configured");
   },
 };

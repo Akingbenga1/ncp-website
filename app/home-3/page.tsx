@@ -6,6 +6,7 @@ import { Reveal } from "@/components/Reveal";
 
 export const metadata: Metadata = {
   title: "Home 3",
+  robots: { index: false, follow: false },
 };
 
 const featureSections = [

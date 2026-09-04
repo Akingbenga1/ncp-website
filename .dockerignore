@@ -1,0 +1,18 @@
+# Build context for deploy/Dockerfile.next (repo root)
+node_modules
+.next
+.git
+.cursor
+.vercel
+Sprints
+Project-documents
+cms/node_modules
+cms/.cache
+cms/.tmp
+cms/build
+cms/dist
+*.log
+.env
+.env*.local
+deploy/.env.prod
+tsconfig.tsbuildinfo

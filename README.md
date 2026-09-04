@@ -40,5 +40,11 @@ Admin UI defaults to [http://localhost:1337/admin](http://localhost:1337/admin).
 - Sprint / task plan: `Project-documents/jira-task.md`
 - Visual system: `Project-documents/current-design.md`
 - Hosting / backups: `Project-documents/hosting-plan.md`
+- Production go-live: `docs/production-go-live.md`
+- VPS Compose (Option B): `deploy/`
+
+```bash
+node scripts/check-production-env.mjs
+```
 
 Local CMS Postgres often uses host port **5434** when 5432 is occupied — see `cms/README.md`.

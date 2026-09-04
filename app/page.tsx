@@ -9,7 +9,9 @@ import {
 } from "@/data/pixabay-credits";
 
 export const metadata: Metadata = {
-  title: "Home",
+  title: {
+    absolute: "Nigerian Community Peterborough",
+  },
   description:
     "Nigerian Community Peterborough — connect, inform, and engage with Nigerian families and friends in Peterborough and beyond.",
 };

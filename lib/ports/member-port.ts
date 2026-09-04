@@ -3,8 +3,12 @@ import type {
   UpdateProfileInput,
 } from "@/lib/domain/member";
 
-/** Port: member profile read/update. Concrete: Strapi users/members. */
+/**
+ * Port: read/update the signed-in member’s own profile.
+ * Concrete: Strapi users (Tasks 5.2–5.3). No Strapi types here.
+ * Never exposes other members’ data.
+ */
 export interface MemberPort {
-  getProfile(): Promise<MemberProfile | null>;
-  updateProfile(input: UpdateProfileInput): Promise<MemberProfile>;
+  getOwnProfile(): Promise<MemberProfile | null>;
+  updateOwnProfile(input: UpdateProfileInput): Promise<MemberProfile>;
 }

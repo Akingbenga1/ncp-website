@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CommunityCarousel } from "@/components/CommunityCarousel";
-import { HeroVariantNav } from "@/components/HeroVariantNav";
 import { Home2FeatureFlow } from "@/components/Home2FeatureFlow";
 import { Reveal } from "@/components/Reveal";
 import {
@@ -11,6 +10,7 @@ import {
 
 export const metadata: Metadata = {
   title: "Home 2",
+  robots: { index: false, follow: false },
 };
 
 export default function HomeTwoPage() {
@@ -38,7 +38,6 @@ export default function HomeTwoPage() {
           <Link className="btn btn-primary hero-immersion-cta" href="/about">
             About us
           </Link>
-          <HeroVariantNav current="/home-2" tone="light" />
         </div>
       </section>
 

@@ -1,30 +1,31 @@
 import type { Metadata } from "next";
 import Link from "next/link";
 import { CommunityPhoto } from "@/components/CommunityPhoto";
-import { MembershipEnquiryForm } from "@/components/MembershipEnquiryForm";
 import { Reveal } from "@/components/Reveal";
 import { communityPhotos } from "@/data/pixabay-credits";
 import { siteContact } from "@/data/site-contact";
+import { getAppServices } from "@/lib/composition";
+import { logoutAction } from "@/lib/actions/auth";
 
 export const metadata: Metadata = {
   title: "Get involved",
   description:
-    "Join Nigerian Community Peterborough as a member, volunteer, or supporter — enquire or donate.",
+    "Join Nigerian Community Peterborough as a member, volunteer, or supporter — register free or donate.",
 };
 
 const paths = [
   {
     index: "01",
     title: "Member",
-    body: "Join the community and stay in the loop with what NCP is doing.",
-    href: "#membership-enquiry",
-    cta: "Start enquiry",
+    body: "Create a free account and stay in the loop with what NCP is doing.",
+    href: "/register",
+    cta: "Register free",
   },
   {
     index: "02",
     title: "Volunteer",
     body: "Give time — events, welcome, and the work that keeps people together.",
-    href: "#membership-enquiry",
+    href: "/register",
     cta: "Offer to help",
   },
   {
@@ -36,7 +37,9 @@ const paths = [
   },
 ] as const;
 
-export default function GetInvolvedPage() {
+export default async function GetInvolvedPage() {
+  const session = await getAppServices().auth.getSession();
+
   return (
     <main id="main">
       <header className="page-hero page-hero--banner page-hero--photo">
@@ -82,17 +85,44 @@ export default function GetInvolvedPage() {
         </div>
       </section>
 
-      <section className="section" aria-labelledby="enquiry-heading">
+      <section className="section" aria-labelledby="membership-heading">
         <div className="wrap split split-form">
           <Reveal className="card form-card" variant="left">
             <div id="membership-enquiry">
-              <h2 id="enquiry-heading">Membership enquiry</h2>
-              <p className="form-note">
-                Registration and enquiry delivery will use the membership and
-                mail ports when those flows go live. Until then, email Theresa or
-                call the EXCO line — this form never pretends a message was sent.
-              </p>
-              <MembershipEnquiryForm />
+              <h2 id="membership-heading">Membership</h2>
+              {session ? (
+                <>
+                  <p className="form-note">
+                    You are signed in as <strong>{session.displayName}</strong>.
+                    Edit your membership details any time from your profile.
+                  </p>
+                  <div className="form-actions">
+                    <Link className="btn btn-solid" href="/profile">
+                      Your profile
+                    </Link>
+                    <form action={logoutAction}>
+                      <button className="btn btn-primary" type="submit">
+                        Sign out
+                      </button>
+                    </form>
+                  </div>
+                </>
+              ) : (
+                <>
+                  <p className="form-note">
+                    Free registration — your account is active immediately. No
+                    approval wait.
+                  </p>
+                  <div className="form-actions">
+                    <Link className="btn btn-solid" href="/register">
+                      Create free account
+                    </Link>
+                    <Link className="btn btn-primary" href="/login">
+                      Sign in
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
           </Reveal>
 
@@ -100,9 +130,9 @@ export default function GetInvolvedPage() {
             <div className="card donate-block">
               <h2>Donate</h2>
               <p>
-                Support the work of Nigerian Community Peterborough. Card and
-                bank options live on the donation page — wired through the
-                payment port when live, never a disabled button here.
+                Support the work of Nigerian Community Peterborough with a
+                one-off or monthly gift — card checkout or bank transfer on the
+                donation page.
               </p>
               <Link className="btn btn-primary" href="/donation">
                 Donation

@@ -26,6 +26,7 @@ export function CommunityCarousel({
   const labelId = useId();
   const [index, setIndex] = useState(0);
   const [paused, setPaused] = useState(false);
+  const [reducedMotion, setReducedMotion] = useState(false);
   const touchX = useRef<number | null>(null);
 
   const count = slides.length;
@@ -36,12 +37,20 @@ export function CommunityCarousel({
   }, [index, onIndexChange]);
 
   useEffect(() => {
-    if (count < 2 || paused) return;
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)");
+    const sync = () => setReducedMotion(mq.matches);
+    sync();
+    mq.addEventListener("change", sync);
+    return () => mq.removeEventListener("change", sync);
+  }, []);
+
+  useEffect(() => {
+    if (count < 2 || paused || reducedMotion) return;
     const id = window.setInterval(() => {
       setIndex((current) => (current + 1) % count);
     }, intervalMs);
     return () => window.clearInterval(id);
-  }, [count, intervalMs, paused]);
+  }, [count, intervalMs, paused, reducedMotion]);
 
   if (!active) return null;
 

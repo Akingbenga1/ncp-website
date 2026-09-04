@@ -1,15 +1,20 @@
 import type {
-  ContentListParams,
   EventDetail,
+  EventListParams,
   EventSummary,
   NewsArticle,
+  NewsListParams,
   NewsSummary,
 } from "@/lib/domain/content";
 
-/** Port: list/get published events & news. Concrete: Strapi content-types. */
+/**
+ * ContentPort — list/get published Events & News.
+ * Concrete adapter: Strapi content-types (Sprint 3).
+ * UI and use-cases must depend on this contract only — never on Strapi SDK shapes.
+ */
 export interface ContentPort {
-  listEvents(params?: ContentListParams): Promise<EventSummary[]>;
+  listEvents(params?: EventListParams): Promise<EventSummary[]>;
   getEventBySlug(slug: string): Promise<EventDetail | null>;
-  listNews(params?: ContentListParams): Promise<NewsSummary[]>;
+  listNews(params?: NewsListParams): Promise<NewsSummary[]>;
   getNewsBySlug(slug: string): Promise<NewsArticle | null>;
 }

@@ -117,6 +117,8 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
                       src={slide.photo.file}
                       alt={isActive ? slide.photo.alt : ""}
                       className="hero-carousel-image"
+                      width={1200}
+                      height={900}
                       loading={i === 0 ? "eager" : "lazy"}
                       decoding="async"
                       fetchPriority={i === 0 ? "high" : "auto"}

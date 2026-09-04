@@ -1,6 +1,6 @@
 import type { ContentPort } from "@/lib/ports/content-port";
 
-/** No-op ContentPort until Strapi adapter is wired (Sprint 3). */
+/** No-op ContentPort for tests / CONTENT_ADAPTER=noop isolation. */
 export const noopContentAdapter: ContentPort = {
   async listEvents() {
     return [];

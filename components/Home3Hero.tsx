@@ -3,7 +3,6 @@
 import { useCallback, useState } from "react";
 import Link from "next/link";
 import { CommunityCarousel } from "@/components/CommunityCarousel";
-import { HeroVariantNav } from "@/components/HeroVariantNav";
 import {
   communityPhotos,
   type PixabayCredit,
@@ -139,8 +138,8 @@ export function Home3Hero() {
 
             <nav className="hero-panel-dock-nav" aria-label="Primary">
               <Link href="/about">About</Link>
+              <Link href="/events">Events</Link>
               <Link href="/get-involved">Join</Link>
-              <HeroVariantNav current="/home-3" tone="pill" />
             </nav>
 
             <Link className="btn btn-primary hero-panel-dock-cta" href="/get-involved">
