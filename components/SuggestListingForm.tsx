@@ -11,6 +11,15 @@ import {
   listingCategoryLabel,
 } from "@/lib/domain/listing-labels";
 
+const inputClass =
+  "mt-space-3xs w-full rounded-lg border border-border-strong bg-surface-card px-space-sm py-space-2xs font-body text-body-md text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+const labelClass =
+  "flex flex-col font-label text-label-md font-semibold text-text-primary";
+const btnSolid =
+  "inline-flex items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary hover:bg-primary-container disabled:opacity-60";
+const btnGhost =
+  "inline-flex items-center justify-center rounded-lg border border-border-strong bg-surface-card px-space-md py-space-2xs font-label text-label-lg text-primary hover:bg-surface-tinted";
+
 function FieldError({
   id,
   message,
@@ -20,7 +29,7 @@ function FieldError({
 }) {
   if (!message) return null;
   return (
-    <p className="form-field-error" id={id} role="alert">
+    <p className="mt-space-3xs font-body text-body-sm text-error" id={id} role="alert">
       {message}
     </p>
   );
@@ -34,13 +43,15 @@ export function SuggestListingForm() {
 
   if (state.status === "success") {
     return (
-      <div className="form" role="status">
-        <p className="form-status form-status--success">{state.message}</p>
-        <p className="form-actions">
-          <a className="btn btn-solid" href="/market">
+      <div className="flex flex-col gap-space-md" role="status">
+        <p className="rounded-lg bg-surface-tinted px-space-sm py-space-2xs font-body text-body-md text-brand-emerald">
+          {state.message}
+        </p>
+        <p className="flex flex-wrap gap-space-2xs">
+          <a className={btnSolid} href="/market">
             Back to Market
           </a>
-          <a className="btn btn-primary" href="/market/suggest">
+          <a className={btnGhost} href="/market/suggest">
             Suggest another
           </a>
         </p>
@@ -49,14 +60,17 @@ export function SuggestListingForm() {
   }
 
   return (
-    <form className="form" action={formAction} noValidate>
+    <form className="flex flex-col gap-space-sm" action={formAction} noValidate>
       {state.status === "error" && state.message ? (
-        <p className="form-status form-status--error" role="alert">
+        <p
+          className="rounded-lg bg-error-container px-space-sm py-space-2xs font-body text-body-md text-on-error-container"
+          role="alert"
+        >
           {state.message}
         </p>
       ) : null}
 
-      <label htmlFor="listing-name">
+      <label className={labelClass} htmlFor="listing-name">
         Listing name
         <input
           id="listing-name"
@@ -64,6 +78,7 @@ export function SuggestListingForm() {
           type="text"
           autoComplete="organization"
           required
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.name)}
           aria-describedby={
             state.fieldErrors?.name ? "listing-name-error" : undefined
@@ -72,13 +87,14 @@ export function SuggestListingForm() {
       </label>
       <FieldError id="listing-name-error" message={state.fieldErrors?.name} />
 
-      <label htmlFor="listing-category">
+      <label className={labelClass} htmlFor="listing-category">
         Category
         <select
           id="listing-category"
           name="category"
           required
           defaultValue=""
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.category)}
           aria-describedby={
             state.fieldErrors?.category ? "listing-category-error" : undefined
@@ -99,7 +115,7 @@ export function SuggestListingForm() {
         message={state.fieldErrors?.category}
       />
 
-      <label htmlFor="listing-locality">
+      <label className={labelClass} htmlFor="listing-locality">
         Area / town
         <input
           id="listing-locality"
@@ -107,16 +123,18 @@ export function SuggestListingForm() {
           type="text"
           autoComplete="address-level2"
           placeholder="e.g. Peterborough"
+          className={inputClass}
         />
       </label>
 
-      <label htmlFor="listing-description">
+      <label className={labelClass} htmlFor="listing-description">
         Short description
         <textarea
           id="listing-description"
           name="description"
           rows={5}
           required
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.description)}
           aria-describedby={
             state.fieldErrors?.description
@@ -130,7 +148,7 @@ export function SuggestListingForm() {
         message={state.fieldErrors?.description}
       />
 
-      <label htmlFor="listing-phone">
+      <label className={labelClass} htmlFor="listing-phone">
         Phone (optional)
         <input
           id="listing-phone"
@@ -138,10 +156,11 @@ export function SuggestListingForm() {
           type="tel"
           autoComplete="tel"
           inputMode="tel"
+          className={inputClass}
         />
       </label>
 
-      <label htmlFor="listing-email">
+      <label className={labelClass} htmlFor="listing-email">
         Listing email (optional)
         <input
           id="listing-email"
@@ -149,6 +168,7 @@ export function SuggestListingForm() {
           type="email"
           autoComplete="email"
           inputMode="email"
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.contactEmail)}
           aria-describedby={
             state.fieldErrors?.contactEmail
@@ -162,7 +182,7 @@ export function SuggestListingForm() {
         message={state.fieldErrors?.contactEmail}
       />
 
-      <label htmlFor="listing-website">
+      <label className={labelClass} htmlFor="listing-website">
         Website (optional)
         <input
           id="listing-website"
@@ -170,6 +190,7 @@ export function SuggestListingForm() {
           type="url"
           inputMode="url"
           placeholder="https://"
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.websiteUrl)}
           aria-describedby={
             state.fieldErrors?.websiteUrl ? "listing-website-error" : undefined
@@ -181,7 +202,7 @@ export function SuggestListingForm() {
         message={state.fieldErrors?.websiteUrl}
       />
 
-      <label htmlFor="listing-submitter">
+      <label className={labelClass} htmlFor="listing-submitter">
         Your email (optional)
         <input
           id="listing-submitter"
@@ -189,6 +210,7 @@ export function SuggestListingForm() {
           type="email"
           autoComplete="email"
           inputMode="email"
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.submittedByEmail)}
           aria-describedby={
             state.fieldErrors?.submittedByEmail
@@ -197,7 +219,7 @@ export function SuggestListingForm() {
           }
         />
       </label>
-      <p className="form-note" id="listing-submitter-hint">
+      <p className="font-body text-body-sm text-text-muted" id="listing-submitter-hint">
         So we can contact you if we need more detail. Not shown on the public
         listing.
       </p>
@@ -206,12 +228,16 @@ export function SuggestListingForm() {
         message={state.fieldErrors?.submittedByEmail}
       />
 
-      <label className="form-consent" htmlFor="listing-consent">
+      <label
+        className="flex items-start gap-space-2xs font-body text-body-sm text-text-secondary"
+        htmlFor="listing-consent"
+      >
         <input
           id="listing-consent"
           name="consent"
           type="checkbox"
           required
+          className="mt-1 h-4 w-4 rounded border-border-strong text-primary focus:ring-primary/20"
           aria-invalid={Boolean(state.fieldErrors?.consent)}
           aria-describedby={
             state.fieldErrors?.consent ? "listing-consent-error" : undefined
@@ -228,8 +254,8 @@ export function SuggestListingForm() {
         message={state.fieldErrors?.consent}
       />
 
-      <div className="form-actions">
-        <button className="btn btn-solid" type="submit" disabled={pending}>
+      <div className="flex flex-wrap gap-space-2xs pt-space-2xs">
+        <button className={btnSolid} type="submit" disabled={pending}>
           {pending ? "Sending…" : "Submit suggestion"}
         </button>
       </div>

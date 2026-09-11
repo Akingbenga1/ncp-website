@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Montserrat, Open_Sans } from "next/font/google";
+import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { CookieNotice } from "@/components/CookieNotice";
 import { Footer } from "@/components/Footer";
 import { Header } from "@/components/Header";
@@ -8,17 +8,17 @@ import { SkipLink } from "@/components/SkipLink";
 import { getSiteUrl } from "@/lib/site-url";
 import "./globals.css";
 
-const montserrat = Montserrat({
+const plusJakarta = Plus_Jakarta_Sans({
   subsets: ["latin"],
   weight: ["600", "700", "800"],
-  variable: "--font-montserrat",
+  variable: "--font-plus-jakarta",
   display: "swap",
 });
 
-const openSans = Open_Sans({
+const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "600", "700"],
-  variable: "--font-open-sans",
+  weight: ["400", "500", "600"],
+  variable: "--font-inter",
   display: "swap",
 });
 
@@ -58,14 +58,20 @@ export default function RootLayout({
     <html
       lang="en"
       data-scroll-behavior="smooth"
-      className={`${montserrat.variable} ${openSans.variable}`}
+      className={`${plusJakarta.variable} ${inter.variable}`}
       suppressHydrationWarning
     >
-      <body>
+      <head>
+        <link
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0&display=swap"
+          rel="stylesheet"
+        />
+      </head>
+      <body className="flex min-h-screen flex-col">
         <ScrollProgress />
         <SkipLink />
         <Header />
-        {children}
+        <div className="flex-1">{children}</div>
         <Footer />
         <CookieNotice />
       </body>

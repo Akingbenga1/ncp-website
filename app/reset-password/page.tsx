@@ -21,34 +21,40 @@ export default async function ResetPasswordPage({
   const token = typeof raw === "string" ? raw.trim() : "";
 
   return (
-    <main id="main">
-      <header className="page-hero page-hero--banner">
-        <div className="wrap">
-          <p className="hero-kicker">Membership</p>
-          <h1>Reset password</h1>
-          <p className="hero-lead hero-lead-inline">
-            Choose a new password for your free NCP membership account.
-          </p>
-        </div>
+    <main
+      id="main"
+      className="mx-auto w-full max-w-container-max flex-grow bg-surface px-gutter-mobile pt-20 md:px-gutter-desktop"
+    >
+      <header className="py-space-xl">
+        <p className="font-label text-label-eyebrow uppercase tracking-widest text-brand-emerald">
+          Membership
+        </p>
+        <h1 className="mt-space-2xs font-display text-display-lg-mobile font-extrabold tracking-tight text-primary md:text-headline-xl">
+          Reset password
+        </h1>
+        <p className="mt-space-sm max-w-2xl font-body text-body-lg text-text-secondary">
+          Choose a new password for your free NCP membership account.
+        </p>
       </header>
 
-      <section
-        className="section section-overlap"
-        aria-labelledby="reset-heading"
-      >
-        <div className="wrap content-detail">
-          <h2 id="reset-heading" className="visually-hidden">
-            Reset password form
-          </h2>
-          <Reveal className="home2-glass content-detail-panel" variant="up">
-            <ResetPasswordForm token={token} />
-            <p className="content-detail-back">
-              <Link className="btn btn-primary" href="/forgot-password">
-                Request a new link
-              </Link>
-            </p>
-          </Reveal>
-        </div>
+      <section className="pb-space-2xl" aria-labelledby="reset-heading">
+        <h2 id="reset-heading" className="sr-only">
+          Reset password form
+        </h2>
+        <Reveal
+          className="mx-auto max-w-lg rounded-2xl border border-border-subtle bg-surface-card p-space-lg shadow-sm"
+          variant="up"
+        >
+          <ResetPasswordForm token={token} />
+          <p className="mt-space-lg">
+            <Link
+              className="inline-flex items-center justify-center rounded-lg border border-border-strong bg-surface-card px-space-md py-space-2xs font-label text-label-lg text-primary hover:bg-surface-tinted"
+              href="/forgot-password"
+            >
+              Request a new link
+            </Link>
+          </p>
+        </Reveal>
       </section>
     </main>
   );

@@ -1,9 +1,10 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useRef, type ReactNode } from "react";
+import { useEffect, useRef, useState, type ReactNode } from "react";
 import { CommunityPhoto } from "@/components/CommunityPhoto";
 import { communityPhotos } from "@/data/pixabay-credits";
+import { cn } from "@/lib/cn";
 
 type Feature = {
   id: string;
@@ -60,20 +61,21 @@ const features: Feature[] = [
 
 function useStageInView(threshold = 0.22) {
   const ref = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.classList.add("is-in");
+      setVisible(true);
       return;
     }
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.classList.add("is-in");
+          setVisible(true);
           observer.unobserve(el);
         }
       },
@@ -84,7 +86,7 @@ function useStageInView(threshold = 0.22) {
     return () => observer.disconnect();
   }, [threshold]);
 
-  return ref;
+  return { ref, visible };
 }
 
 function FeatureStage({
@@ -94,13 +96,16 @@ function FeatureStage({
   feature: Feature;
   children: ReactNode;
 }) {
-  const ref = useStageInView(0.28);
+  const { ref, visible } = useStageInView(0.28);
 
   return (
     <article
       ref={ref}
       id={feature.id}
-      className={`home2-feature home2-feature--${feature.align}`}
+      className={cn(
+        "py-space-xl transition duration-700 ease-out",
+        visible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+      )}
       aria-labelledby={`${feature.id}-heading`}
     >
       {children}
@@ -109,38 +114,61 @@ function FeatureStage({
 }
 
 export function Home2FeatureFlow() {
-  const introRef = useStageInView(0.35);
+  const { ref: introRef, visible: introVisible } = useStageInView(0.35);
 
   return (
-    <section className="home2-features" aria-label="What you will find on NCP">
-      <header ref={introRef} className="home2-features-intro wrap">
-        <div className="home2-glass home2-features-intro-panel">
-          <p className="kicker">On this digital home</p>
-          <h2>Ways we connect, inform, and engage</h2>
-          <p className="section-lead">
+    <section className="py-space-xl" aria-label="What you will find on NCP">
+      <header
+        ref={introRef}
+        className={cn(
+          "mb-space-xl transition duration-700 ease-out",
+          introVisible ? "translate-y-0 opacity-100" : "translate-y-6 opacity-0",
+        )}
+      >
+        <div className="rounded-2xl border border-border-subtle bg-surface-card p-space-lg shadow-sm">
+          <p className="font-label text-label-eyebrow uppercase tracking-widest text-brand-emerald">
+            On this digital home
+          </p>
+          <h2 className="mt-space-2xs font-headline text-headline-lg font-bold text-primary">
+            Ways we connect, inform, and engage
+          </h2>
+          <p className="mt-space-sm max-w-2xl font-body text-body-lg text-text-secondary">
             Membership, Market, Donation, and Events &amp; news — the core of
             NCP online, ready for the community to use.
           </p>
         </div>
       </header>
 
-      <div className="home2-features-rail" aria-hidden="true">
-        <div className="home2-features-rail-line" />
-      </div>
-
       {features.map((feature) => (
         <FeatureStage key={feature.id} feature={feature}>
-          <div className="wrap home2-feature-grid">
-            <div className="home2-glass home2-feature-copy">
-              <p className="kicker">{feature.kicker}</p>
-              <h3 id={`${feature.id}-heading`}>{feature.title}</h3>
-              <p>{feature.lead}</p>
-              <Link className="btn btn-primary" href={feature.cta.href}>
+          <div
+            className={cn(
+              "grid items-center gap-space-lg md:grid-cols-2",
+              feature.align === "right" && "md:[&>*:first-child]:order-2",
+            )}
+          >
+            <div className="rounded-2xl border border-border-subtle bg-surface-card p-space-lg shadow-sm">
+              <p className="font-label text-label-eyebrow uppercase tracking-widest text-brand-emerald">
+                {feature.kicker}
+              </p>
+              <h3
+                id={`${feature.id}-heading`}
+                className="mt-space-2xs font-headline text-headline-md font-bold text-primary"
+              >
+                {feature.title}
+              </h3>
+              <p className="mt-space-sm font-body text-body-md text-text-secondary">
+                {feature.lead}
+              </p>
+              <Link
+                className="mt-space-md inline-flex items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary hover:bg-primary-container"
+                href={feature.cta.href}
+              >
                 {feature.cta.label}
               </Link>
             </div>
-            <div className="home2-feature-media">
-              <div className="home2-feature-frame">
+            <div className="overflow-hidden rounded-2xl shadow-card">
+              <div className="aspect-[4/3]">
                 <CommunityPhoto credit={feature.photo} />
               </div>
             </div>

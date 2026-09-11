@@ -7,6 +7,14 @@ import {
   initialDonateCheckoutState,
 } from "@/lib/actions/donate";
 import type { CharityIdentity } from "@/lib/domain/payment";
+import { cn } from "@/lib/cn";
+
+const inputClass =
+  "mt-space-3xs w-full rounded-lg border border-border-strong bg-surface-card px-space-sm py-space-2xs font-body text-body-md text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+const labelClass =
+  "flex flex-col font-label text-label-md font-semibold text-text-primary";
+const btnSolid =
+  "inline-flex items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary hover:bg-primary-container disabled:opacity-60";
 
 function FieldError({
   id,
@@ -17,7 +25,7 @@ function FieldError({
 }) {
   if (!message) return null;
   return (
-    <p className="form-field-error" id={id} role="alert">
+    <p className="mt-space-3xs font-body text-body-sm text-error" id={id} role="alert">
       {message}
     </p>
   );
@@ -52,8 +60,8 @@ export function DonateForm({
 
   if (!checkoutAvailable) {
     return (
-      <div className="form" role="status">
-        <p className="form-status">
+      <div className="flex flex-col gap-space-md" role="status">
+        <p className="rounded-lg bg-surface-tinted px-space-sm py-space-2xs font-body text-body-md text-text-secondary">
           Card donations are being set up. You can still give by bank transfer
           using the details on this page, or email Theresa for help.
         </p>
@@ -65,45 +73,67 @@ export function DonateForm({
     charityIdentity?.giftAidDeclaration ?? DRAFT_GIFT_AID_LABEL;
 
   return (
-    <form className="form donate-form" action={formAction} noValidate>
+    <form className="flex flex-col gap-space-md" action={formAction} noValidate>
       {state.status === "error" && state.message ? (
-        <p className="form-status form-status--error" role="alert">
+        <p
+          className="rounded-lg bg-error-container px-space-sm py-space-2xs font-body text-body-md text-on-error-container"
+          role="alert"
+        >
           {state.message}
         </p>
       ) : null}
 
-      <fieldset className="donate-fieldset">
-        <legend>Amount</legend>
+      <fieldset className="flex flex-col gap-space-sm border-0 p-0">
+        <legend className="font-label text-label-md font-semibold text-text-primary">
+          Amount
+        </legend>
         <div
-          className="donate-amount-options"
+          className="flex flex-wrap gap-space-2xs"
           role="radiogroup"
           aria-label="Donation amount"
         >
           {SUGGESTED.map((option) => (
-            <label key={option.value} className="donate-choice">
+            <label
+              key={option.value}
+              className={cn(
+                "cursor-pointer rounded-lg border px-space-sm py-space-2xs font-label text-label-lg transition-colors",
+                amountPreset === option.value
+                  ? "border-primary bg-primary text-on-primary"
+                  : "border-border-strong bg-surface-card text-primary hover:bg-surface-tinted",
+              )}
+            >
               <input
                 type="radio"
                 name="amountPreset"
                 value={option.value}
                 checked={amountPreset === option.value}
                 onChange={() => setAmountPreset(option.value)}
+                className="sr-only"
               />
               <span>{option.label}</span>
             </label>
           ))}
-          <label className="donate-choice">
+          <label
+            className={cn(
+              "cursor-pointer rounded-lg border px-space-sm py-space-2xs font-label text-label-lg transition-colors",
+              amountPreset === "other"
+                ? "border-primary bg-primary text-on-primary"
+                : "border-border-strong bg-surface-card text-primary hover:bg-surface-tinted",
+            )}
+          >
             <input
               type="radio"
               name="amountPreset"
               value="other"
               checked={amountPreset === "other"}
               onChange={() => setAmountPreset("other")}
+              className="sr-only"
             />
             <span>Other</span>
           </label>
         </div>
         {amountPreset === "other" ? (
-          <label htmlFor="donate-amount-other">
+          <label className={labelClass} htmlFor="donate-amount-other">
             Other amount (£)
             <input
               id="donate-amount-other"
@@ -114,6 +144,7 @@ export function DonateForm({
               max={25000}
               step={0.01}
               required
+              className={inputClass}
               aria-invalid={Boolean(state.fieldErrors?.amount)}
               aria-describedby={
                 state.fieldErrors?.amount ? "donate-amount-error" : undefined
@@ -124,24 +155,27 @@ export function DonateForm({
         <FieldError id="donate-amount-error" message={state.fieldErrors?.amount} />
       </fieldset>
 
-      <fieldset className="donate-fieldset">
-        <legend>Frequency</legend>
+      <fieldset className="flex flex-col gap-space-sm border-0 p-0">
+        <legend className="font-label text-label-md font-semibold text-text-primary">
+          Frequency
+        </legend>
         <div
-          className="donate-amount-options"
+          className="flex flex-wrap gap-space-2xs"
           role="radiogroup"
           aria-label="Donation frequency"
         >
-          <label className="donate-choice">
+          <label className="flex cursor-pointer items-center gap-space-2xs rounded-lg border border-border-strong bg-surface-card px-space-sm py-space-2xs font-label text-label-lg text-primary has-[:checked]:border-primary has-[:checked]:bg-surface-tinted">
             <input
               type="radio"
               name="frequency"
               value="one-off"
               defaultChecked
+              className="accent-primary"
             />
             <span>One-off</span>
           </label>
-          <label className="donate-choice">
-            <input type="radio" name="frequency" value="monthly" />
+          <label className="flex cursor-pointer items-center gap-space-2xs rounded-lg border border-border-strong bg-surface-card px-space-sm py-space-2xs font-label text-label-lg text-primary has-[:checked]:border-primary has-[:checked]:bg-surface-tinted">
+            <input type="radio" name="frequency" value="monthly" className="accent-primary" />
             <span>Monthly</span>
           </label>
         </div>
@@ -151,27 +185,30 @@ export function DonateForm({
         />
       </fieldset>
 
-      <fieldset className="donate-fieldset">
-        <legend>Gift Aid</legend>
+      <fieldset className="flex flex-col gap-space-sm border-0 p-0">
+        <legend className="font-label text-label-md font-semibold text-text-primary">
+          Gift Aid
+        </legend>
         {charityIdentity ? (
-          <p className="donate-charity-identity" id="donate-charity-identity">
+          <p className="font-body text-body-sm text-text-secondary" id="donate-charity-identity">
             Gift Aid claims are made by{" "}
             <strong>{charityIdentity.registeredName}</strong>, registered charity
             number <strong>{charityIdentity.charityNumber}</strong>.
           </p>
         ) : (
-          <p className="form-note" role="status">
+          <p className="font-body text-body-sm text-text-muted" role="status">
             Registered charity name and number will appear here once NCP confirms
             them (NH-2). Gift Aid can still be recorded; official identity copy
             follows.
           </p>
         )}
-        <label className="form-consent">
+        <label className="flex items-start gap-space-2xs font-body text-body-sm text-text-secondary">
           <input
             type="checkbox"
             name="giftAid"
             checked={giftAid}
             onChange={(event) => setGiftAid(event.target.checked)}
+            className="mt-1 h-4 w-4 rounded border-border-strong text-primary focus:ring-primary/20"
             aria-describedby={
               charityIdentity ? "donate-charity-identity" : undefined
             }
@@ -179,14 +216,14 @@ export function DonateForm({
           <span>{declaration}</span>
         </label>
         {!charityIdentity ? (
-          <p className="form-note">
+          <p className="font-body text-body-sm text-text-muted">
             Draft declaration for launch wiring. Final wording may be replaced
             when NCP provides official Gift Aid text (NH-5).
           </p>
         ) : null}
         {giftAid ? (
-          <div className="donate-gift-aid-fields">
-            <label htmlFor="donate-gift-aid-name">
+          <div className="flex flex-col gap-space-sm rounded-xl bg-surface-stone p-space-sm">
+            <label className={labelClass} htmlFor="donate-gift-aid-name">
               Full name
               <input
                 id="donate-gift-aid-name"
@@ -194,6 +231,7 @@ export function DonateForm({
                 type="text"
                 autoComplete="name"
                 required
+                className={inputClass}
                 aria-invalid={Boolean(state.fieldErrors?.giftAidName)}
                 aria-describedby={
                   state.fieldErrors?.giftAidName
@@ -207,7 +245,7 @@ export function DonateForm({
               message={state.fieldErrors?.giftAidName}
             />
 
-            <label htmlFor="donate-gift-aid-address">
+            <label className={labelClass} htmlFor="donate-gift-aid-address">
               Address
               <input
                 id="donate-gift-aid-address"
@@ -215,6 +253,7 @@ export function DonateForm({
                 type="text"
                 autoComplete="street-address"
                 required
+                className={inputClass}
                 aria-invalid={Boolean(state.fieldErrors?.giftAidAddress)}
                 aria-describedby={
                   state.fieldErrors?.giftAidAddress
@@ -228,7 +267,7 @@ export function DonateForm({
               message={state.fieldErrors?.giftAidAddress}
             />
 
-            <label htmlFor="donate-gift-aid-postcode">
+            <label className={labelClass} htmlFor="donate-gift-aid-postcode">
               Postcode
               <input
                 id="donate-gift-aid-postcode"
@@ -236,6 +275,7 @@ export function DonateForm({
                 type="text"
                 autoComplete="postal-code"
                 required
+                className={inputClass}
                 aria-invalid={Boolean(state.fieldErrors?.giftAidPostcode)}
                 aria-describedby={
                   state.fieldErrors?.giftAidPostcode
@@ -252,17 +292,20 @@ export function DonateForm({
         ) : null}
       </fieldset>
 
-      <div className="form-actions">
-        <button className="btn btn-solid" type="submit" disabled={pending}>
+      <div className="flex flex-wrap gap-space-2xs">
+        <button className={btnSolid} type="submit" disabled={pending}>
           {pending ? "Starting checkout…" : "Continue to card payment"}
         </button>
       </div>
-      <p className="form-note">
+      <p className="font-body text-body-sm text-text-muted">
         You will complete payment on a secure card checkout page. Money goes to
         NCP’s payment account, not a developer account. We process donation
         records under legitimate interests / legal obligation for financial
         records, and consent where you opt into Gift Aid. See our{" "}
-        <Link href="/privacy">privacy policy</Link>.
+        <Link className="text-brand-emerald underline-offset-2 hover:underline" href="/privacy">
+          privacy policy
+        </Link>
+        .
       </p>
     </form>
   );

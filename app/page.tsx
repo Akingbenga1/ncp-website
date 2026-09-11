@@ -24,39 +24,52 @@ const heroQuickLinks = [
 
 export default function HomePage() {
   return (
-    <main id="main" className="home-variant home-variant-2">
-      <section className="hero-immersion" aria-labelledby="home2-heading">
-        <div className="hero-immersion-media" aria-hidden="true">
+    <main id="main" className="flex w-full flex-col bg-surface">
+      <section
+        className="relative min-h-[85vh] overflow-hidden bg-primary text-on-primary"
+        aria-labelledby="home2-heading"
+      >
+        <div className="absolute inset-0" aria-hidden="true">
           <CommunityCarousel
             slides={[...ukLandscapeSlides]}
-            className="hero-immersion-carousel"
+            className="h-full min-h-[85vh] rounded-none"
+            fill
             intervalMs={7000}
             priorityFirst
           />
-          <div className="hero-immersion-fog" />
-          <div className="hero-immersion-veil" />
+          <div className="absolute inset-0 bg-gradient-to-t from-primary via-primary/55 to-primary/25" />
         </div>
 
-        <div className="hero-immersion-content">
-          <p className="hero-immersion-kicker">
+        <div className="relative z-10 mx-auto flex min-h-[85vh] w-full max-w-container-max flex-col justify-end px-gutter-mobile pb-space-3xl pt-28 md:px-gutter-desktop">
+          <p className="font-label text-label-eyebrow uppercase tracking-widest text-brand-mint">
             Nigerian Community Peterborough
           </p>
-          <h1 id="home2-heading">Peterborough &amp; beyond</h1>
-          <p className="hero-immersion-lead">
+          <h1
+            id="home2-heading"
+            className="mt-space-2xs max-w-3xl font-display text-display-lg-mobile font-extrabold tracking-tight text-on-primary md:text-display-lg"
+          >
+            Peterborough &amp; beyond
+          </h1>
+          <p className="mt-space-sm max-w-xl font-body text-body-lg text-surface-container-low">
             Our digital home to connect, inform, and engage — uniting Nigerian
             families and friends across Peterborough and the wider UK.
           </p>
-          <Link className="btn btn-primary hero-immersion-cta" href="/about">
+          <Link
+            className="mt-space-md inline-flex w-fit items-center justify-center rounded-lg bg-brand-mint px-space-md py-space-xs font-label text-label-lg text-primary hover:bg-primary-fixed"
+            href="/about"
+          >
             About us
           </Link>
-          <nav
-            className="hero-variant-nav hero-variant-nav--light"
-            aria-label="Quick links"
-          >
-            <ul>
+          <nav className="mt-space-lg" aria-label="Quick links">
+            <ul className="flex flex-wrap gap-space-md">
               {heroQuickLinks.map((item) => (
                 <li key={item.href}>
-                  <Link href={item.href}>{item.label}</Link>
+                  <Link
+                    className="font-label text-label-lg text-surface-container-high underline-offset-4 hover:text-brand-mint hover:underline"
+                    href={item.href}
+                  >
+                    {item.label}
+                  </Link>
                 </li>
               ))}
             </ul>
@@ -64,57 +77,60 @@ export default function HomePage() {
         </div>
       </section>
 
-      <div className="home2-after">
-        <div className="home2-after-bg-track" aria-hidden="true">
-          <div className="home2-after-bg">
-            <div className="home2-after-veil" />
-            <div className="home2-after-grain" />
+      <div className="mx-auto w-full max-w-container-max px-gutter-mobile py-space-2xl md:px-gutter-desktop">
+        <Reveal as="section" className="mb-space-2xl" variant="up">
+          <div className="grid items-center gap-space-lg lg:grid-cols-2">
+            <div className="rounded-2xl border border-border-subtle bg-surface-card p-space-lg shadow-sm">
+              <p className="font-label text-label-eyebrow uppercase tracking-widest text-brand-emerald">
+                Our people
+              </p>
+              <h2 className="mt-space-2xs font-headline text-headline-lg font-bold text-primary">
+                Community. Culture. Connection.
+              </h2>
+              <p className="mt-space-sm font-body text-body-lg text-text-secondary">
+                Families, friends, and professionals building life in the UK
+                while carrying Nigerian warmth into every gathering — from
+                Peterborough to the wider diaspora.
+              </p>
+              <Link
+                className="mt-space-md inline-flex items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary hover:bg-primary-container"
+                href="/get-involved"
+              >
+                Get involved
+              </Link>
+            </div>
+            <CommunityCarousel
+              slides={[...communityPortraitSlides]}
+              className="shadow-card"
+              intervalMs={4800}
+              showCaptions
+            />
           </div>
-        </div>
+        </Reveal>
 
-        <div className="home2-after-content">
-          <Reveal as="section" className="section home2-community" variant="up">
-            <div className="wrap home2-community-grid">
-              <div className="home2-glass home2-community-copy">
-                <p className="kicker">Our people</p>
-                <h2>Community. Culture. Connection.</h2>
-                <p className="section-lead">
-                  Families, friends, and professionals building life in the UK
-                  while carrying Nigerian warmth into every gathering — from
-                  Peterborough to the wider diaspora.
-                </p>
-                <Link className="btn btn-primary" href="/get-involved">
-                  Get involved
-                </Link>
-              </div>
-              <CommunityCarousel
-                slides={[...communityPortraitSlides]}
-                className="home2-people-carousel"
-                intervalMs={4800}
-                showCaptions
-              />
-            </div>
-          </Reveal>
+        <Home2FeatureFlow />
 
-          <Home2FeatureFlow />
-
-          <Reveal as="section" className="home2-close" variant="up">
-            <div className="wrap">
-              <div className="home2-glass home2-close-inner">
-                <p className="kicker">Be part of it</p>
-                <h2>Built face to face — strengthened online</h2>
-                <p className="section-lead">
-                  NCP’s website is here so you can find events and news, explore
-                  the Market directory, give to the work, and take the first step
-                  to join or enquire.
-                </p>
-                <Link className="btn btn-primary" href="/get-involved">
-                  Get involved
-                </Link>
-              </div>
-            </div>
-          </Reveal>
-        </div>
+        <Reveal as="section" className="mt-space-xl" variant="up">
+          <div className="rounded-2xl bg-primary p-space-lg text-on-primary shadow-elevated md:p-space-2xl">
+            <p className="font-label text-label-eyebrow uppercase tracking-widest text-brand-mint">
+              Be part of it
+            </p>
+            <h2 className="mt-space-2xs font-headline text-headline-lg font-bold text-on-primary">
+              Built face to face — strengthened online
+            </h2>
+            <p className="mt-space-sm max-w-2xl font-body text-body-lg text-surface-container-low">
+              NCP’s website is here so you can find events and news, explore
+              the Market directory, give to the work, and take the first step
+              to join or enquire.
+            </p>
+            <Link
+              className="mt-space-md inline-flex items-center justify-center rounded-lg bg-brand-mint px-space-md py-space-xs font-label text-label-lg text-primary hover:bg-primary-fixed"
+              href="/get-involved"
+            >
+              Get involved
+            </Link>
+          </div>
+        </Reveal>
       </div>
     </main>
   );

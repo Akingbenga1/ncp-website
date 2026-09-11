@@ -11,49 +11,74 @@ type BankTransferDetailsProps = {
 export function BankTransferDetailsBlock({ details }: BankTransferDetailsProps) {
   if (!details) {
     return (
-      <div className="bank-transfer-block" role="status">
-        <h2 id="bank-transfer-heading">Bank transfer</h2>
-        <p>
+      <div className="flex flex-col gap-space-sm" role="status">
+        <h2
+          id="bank-transfer-heading"
+          className="font-headline text-headline-md font-bold text-primary"
+        >
+          Bank transfer
+        </h2>
+        <p className="font-body text-body-md text-text-secondary">
           Bank account details for offline giving will appear here once NCP
           confirms the account name, sort code, and account number to publish.
         </p>
-        <p className="form-note">
+        <p className="font-body text-body-sm text-text-muted">
           Meanwhile, contact{" "}
-          <a href={siteContact.emailHref}>{siteContact.contactName}</a> (
-          <a href={siteContact.emailHref}>{siteContact.email}</a>) for transfer
-          instructions.
+          <a
+            className="text-brand-emerald underline-offset-2 hover:underline"
+            href={siteContact.emailHref}
+          >
+            {siteContact.contactName}
+          </a>{" "}
+          (
+          <a
+            className="text-brand-emerald underline-offset-2 hover:underline"
+            href={siteContact.emailHref}
+          >
+            {siteContact.email}
+          </a>
+          ) for transfer instructions.
         </p>
       </div>
     );
   }
 
   return (
-    <div className="bank-transfer-block">
-      <h2 id="bank-transfer-heading">Bank transfer</h2>
-      <p>
+    <div className="flex flex-col gap-space-sm">
+      <h2
+        id="bank-transfer-heading"
+        className="font-headline text-headline-md font-bold text-primary"
+      >
+        Bank transfer
+      </h2>
+      <p className="font-body text-body-md text-text-secondary">
         Prefer to give offline? Use these details and include a clear payment
         reference (for example your name).
       </p>
-      <dl className="bank-transfer-dl">
-        <div>
-          <dt>Account name</dt>
-          <dd>{details.accountName}</dd>
+      <dl className="grid gap-space-sm sm:grid-cols-2">
+        <div className="rounded-xl bg-surface-stone p-space-sm">
+          <dt className="font-label text-label-md text-text-muted">Account name</dt>
+          <dd className="mt-space-3xs font-body text-body-md font-semibold text-on-surface">
+            {details.accountName}
+          </dd>
         </div>
         {details.bankName ? (
-          <div>
-            <dt>Bank</dt>
-            <dd>{details.bankName}</dd>
+          <div className="rounded-xl bg-surface-stone p-space-sm">
+            <dt className="font-label text-label-md text-text-muted">Bank</dt>
+            <dd className="mt-space-3xs font-body text-body-md font-semibold text-on-surface">
+              {details.bankName}
+            </dd>
           </div>
         ) : null}
-        <div>
-          <dt>Sort code</dt>
-          <dd>
+        <div className="rounded-xl bg-surface-stone p-space-sm">
+          <dt className="font-label text-label-md text-text-muted">Sort code</dt>
+          <dd className="mt-space-3xs font-body text-body-md font-semibold text-on-surface">
             <code>{details.sortCode}</code>
           </dd>
         </div>
-        <div>
-          <dt>Account number</dt>
-          <dd>
+        <div className="rounded-xl bg-surface-stone p-space-sm">
+          <dt className="font-label text-label-md text-text-muted">Account number</dt>
+          <dd className="mt-space-3xs font-body text-body-md font-semibold text-on-surface">
             <code>{details.accountNumber}</code>
           </dd>
         </div>

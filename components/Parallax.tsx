@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useRef, type ReactNode } from "react";
+import { cn } from "@/lib/cn";
 
 export function Parallax({
   children,
@@ -40,7 +41,7 @@ export function Parallax({
   }, [factor]);
 
   return (
-    <div ref={ref} className={`parallax ${className}`.trim()}>
+    <div ref={ref} className={cn("will-change-transform", className)}>
       {children}
     </div>
   );

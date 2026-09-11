@@ -1,6 +1,13 @@
 "use client";
 
-import { useEffect, useRef, type CSSProperties, type ElementType, type ReactNode } from "react";
+import {
+  useEffect,
+  useRef,
+  useState,
+  type ElementType,
+  type ReactNode,
+} from "react";
+import { cn } from "@/lib/cn";
 
 export type RevealVariant = "up" | "left" | "right" | "scale" | "clip";
 
@@ -12,6 +19,14 @@ type RevealProps = {
   as?: "div" | "section" | "article" | "header";
 };
 
+const hiddenByVariant: Record<RevealVariant, string> = {
+  up: "translate-y-6 opacity-0",
+  left: "-translate-x-6 opacity-0",
+  right: "translate-x-6 opacity-0",
+  scale: "scale-95 opacity-0",
+  clip: "opacity-0",
+};
+
 export function Reveal({
   children,
   className = "",
@@ -20,32 +35,27 @@ export function Reveal({
   as: Tag = "div",
 }: RevealProps) {
   const ref = useRef<HTMLElement>(null);
+  const [visible, setVisible] = useState(false);
 
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
 
     if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
-      el.classList.add("is-in");
+      setVisible(true);
       return;
     }
 
     const rect = el.getBoundingClientRect();
-    const alreadyInView =
-      rect.top < window.innerHeight - 12 && rect.bottom > 12;
-
-    if (alreadyInView) {
-      el.classList.add("is-in");
+    if (rect.top < window.innerHeight - 12 && rect.bottom > 12) {
+      setVisible(true);
       return;
     }
-
-    el.classList.add("reveal-armed");
 
     const observer = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
-          el.classList.remove("reveal-armed");
-          el.classList.add("is-in");
+          setVisible(true);
           observer.unobserve(el);
         }
       },
@@ -57,13 +67,16 @@ export function Reveal({
   }, []);
 
   const Component = Tag as ElementType;
-  const style: CSSProperties = { transitionDelay: `${delay}ms` };
 
   return (
     <Component
       ref={ref}
-      className={`reveal reveal-${variant} ${className}`.trim()}
-      style={style}
+      className={cn(
+        "transition duration-700 ease-out",
+        visible ? "translate-x-0 translate-y-0 scale-100 opacity-100" : hiddenByVariant[variant],
+        className,
+      )}
+      style={{ transitionDelay: `${delay}ms` }}
     >
       {children}
     </Component>

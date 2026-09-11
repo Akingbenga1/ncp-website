@@ -4,24 +4,18 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
 import { primaryNavLinks, searchNav } from "@/data/primary-nav";
+import { cn } from "@/lib/cn";
+import { MaterialIcon } from "./MaterialIcon";
 import { SiteLogo } from "./SiteLogo";
 
 function isCurrentPath(pathname: string, href: string) {
-  if (href === "/") {
-    return pathname === "/";
-  }
+  if (href === "/") return pathname === "/";
   return pathname === href || pathname.startsWith(`${href}/`);
 }
 
 export function Header() {
   const pathname = usePathname();
   const [open, setOpen] = useState(false);
-  const immersive =
-    pathname === "/" ||
-    pathname === "/home-2" ||
-    pathname.startsWith("/home-2/");
-  const panelHome =
-    pathname === "/home-3" || pathname.startsWith("/home-3/");
 
   useEffect(() => {
     setOpen(false);
@@ -36,92 +30,105 @@ export function Header() {
     return () => window.removeEventListener("keydown", onKeyDown);
   }, [open]);
 
-  if (panelHome) {
-    return null;
-  }
-
-  const searchCurrent = isCurrentPath(pathname, searchNav.href);
   const closeMenu = () => setOpen(false);
+  const searchCurrent = isCurrentPath(pathname, searchNav.href);
 
   return (
-    <header className={immersive ? "site-header site-header--immersive" : "site-header"}>
-      <div className="wrap header-inner">
+    <header className="fixed top-0 right-0 left-0 z-50 w-full bg-surface/90 shadow-header backdrop-blur-xl">
+      <div className="mx-auto flex h-20 max-w-container-max items-center justify-between gap-space-sm px-gutter-mobile md:px-gutter-desktop">
         <Link
-          className="logo-link"
           href="/"
           aria-label="NCP — Nigerian Community Peterborough, home"
           onClick={closeMenu}
+          className="flex items-center gap-space-xs"
         >
           <SiteLogo />
+          <span className="font-headline text-headline-sm font-bold tracking-tight text-primary sm:hidden">
+            NCP
+          </span>
         </Link>
+
         <button
-          className="nav-toggle"
+          className="inline-flex items-center justify-center rounded-lg p-space-2xs text-primary md:hidden"
           type="button"
           aria-expanded={open}
           aria-controls="site-nav"
           onClick={() => setOpen((value) => !value)}
         >
-          <span className="visually-hidden">Menu</span>
-          <span className="nav-toggle-bars" aria-hidden="true">
-            <span />
-            <span />
-            <span />
-          </span>
+          <span className="sr-only">Menu</span>
+          <MaterialIcon name={open ? "close" : "menu"} className="text-[28px]" />
         </button>
+
         <nav
           id="site-nav"
-          className={open ? "site-nav is-open" : "site-nav"}
           aria-label="Primary"
+          className={cn(
+            "absolute top-20 right-0 left-0 border-t border-border-subtle bg-surface px-gutter-mobile py-space-sm shadow-elevated md:static md:flex md:items-center md:gap-space-2xs md:border-0 md:bg-transparent md:p-0 md:shadow-none",
+            open ? "block" : "hidden md:flex",
+          )}
         >
-          <ul className="nav-list">
+          <ul className="flex flex-col gap-space-3xs md:flex-row md:items-center md:gap-space-2xs">
             {primaryNavLinks.map((link) => {
               const current = isCurrentPath(pathname, link.href);
+              if (link.cta) {
+                return (
+                  <li key={link.href} className="md:ml-space-2xs">
+                    <Link
+                      href={link.href}
+                      aria-current={current ? "page" : undefined}
+                      prefetch
+                      onClick={closeMenu}
+                      className="inline-flex w-full items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary shadow-sm transition-all hover:bg-primary-container md:w-auto"
+                    >
+                      Join Community
+                    </Link>
+                  </li>
+                );
+              }
               return (
                 <li key={link.href}>
                   <Link
                     href={link.href}
-                    className={link.cta ? "nav-cta" : undefined}
                     aria-current={current ? "page" : undefined}
                     prefetch
                     onClick={closeMenu}
+                    className={cn(
+                      "block rounded-lg px-space-xs py-space-3xs font-label text-label-lg transition-colors",
+                      current
+                        ? "bg-surface-tinted font-bold text-primary"
+                        : "text-on-surface-variant hover:bg-surface-tinted hover:text-primary",
+                    )}
                   >
                     {link.label}
                   </Link>
                 </li>
               );
             })}
-            <li className="nav-search-item">
+            <li>
               <Link
                 href={searchNav.href}
-                className="nav-search"
                 aria-label={searchNav.label}
                 aria-current={searchCurrent ? "page" : undefined}
                 prefetch
                 onClick={closeMenu}
+                className={cn(
+                  "flex items-center gap-space-3xs rounded-lg px-space-xs py-space-3xs font-label text-label-lg transition-colors",
+                  searchCurrent
+                    ? "bg-surface-tinted font-bold text-primary"
+                    : "text-on-surface-variant hover:bg-surface-tinted hover:text-primary",
+                )}
               >
-                <svg
-                  className="nav-search-icon"
-                  width="20"
-                  height="20"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  aria-hidden="true"
-                >
-                  <circle
-                    cx="11"
-                    cy="11"
-                    r="6.5"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                  />
-                  <path
-                    d="M16.5 16.5L21 21"
-                    stroke="currentColor"
-                    strokeWidth="2"
-                    strokeLinecap="round"
-                  />
-                </svg>
-                <span className="nav-search-label">{searchNav.label}</span>
+                <MaterialIcon name="search" className="text-[20px]" />
+                <span className="md:sr-only">{searchNav.label}</span>
+              </Link>
+            </li>
+            <li className="hidden md:block">
+              <Link
+                href="/login"
+                aria-label="Account"
+                className="flex h-8 w-8 items-center justify-center rounded-full bg-primary text-on-primary"
+              >
+                <MaterialIcon name="person" className="text-[18px]" />
               </Link>
             </li>
           </ul>

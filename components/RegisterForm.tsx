@@ -9,6 +9,15 @@ import {
   involvementInterestLabel,
 } from "@/lib/domain/member";
 
+const inputClass =
+  "mt-space-3xs w-full rounded-lg border border-border-strong bg-surface-card px-space-sm py-space-2xs font-body text-body-md text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20";
+const labelClass =
+  "flex flex-col font-label text-label-md font-semibold text-text-primary";
+const btnSolid =
+  "inline-flex items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary hover:bg-primary-container disabled:opacity-60";
+const btnGhost =
+  "inline-flex items-center justify-center rounded-lg border border-border-strong bg-surface-card px-space-md py-space-2xs font-label text-label-lg text-primary hover:bg-surface-tinted";
+
 function FieldError({
   id,
   message,
@@ -18,7 +27,7 @@ function FieldError({
 }) {
   if (!message) return null;
   return (
-    <p className="form-field-error" id={id} role="alert">
+    <p className="mt-space-3xs font-body text-body-sm text-error" id={id} role="alert">
       {message}
     </p>
   );
@@ -32,13 +41,15 @@ export function RegisterForm() {
 
   if (state.status === "success") {
     return (
-      <div className="form" role="status">
-        <p className="form-status form-status--success">{state.message}</p>
-        <p className="form-actions">
-          <Link className="btn btn-solid" href="/profile">
+      <div className="flex flex-col gap-space-md" role="status">
+        <p className="rounded-lg bg-surface-tinted px-space-sm py-space-2xs font-body text-body-md text-brand-emerald">
+          {state.message}
+        </p>
+        <p className="flex flex-wrap gap-space-2xs">
+          <Link className={btnSolid} href="/profile">
             Your profile
           </Link>
-          <Link className="btn btn-primary" href="/login">
+          <Link className={btnGhost} href="/login">
             Sign in
           </Link>
         </p>
@@ -47,14 +58,17 @@ export function RegisterForm() {
   }
 
   return (
-    <form className="form" action={formAction} noValidate>
+    <form className="flex flex-col gap-space-sm" action={formAction} noValidate>
       {state.status === "error" && state.message ? (
-        <p className="form-status form-status--error" role="alert">
+        <p
+          className="rounded-lg bg-error-container px-space-sm py-space-2xs font-body text-body-md text-on-error-container"
+          role="alert"
+        >
           {state.message}
         </p>
       ) : null}
 
-      <label htmlFor="register-display-name">
+      <label className={labelClass} htmlFor="register-display-name">
         Full name
         <input
           id="register-display-name"
@@ -62,6 +76,7 @@ export function RegisterForm() {
           type="text"
           autoComplete="name"
           required
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.displayName)}
           aria-describedby={
             state.fieldErrors?.displayName
@@ -75,7 +90,7 @@ export function RegisterForm() {
         message={state.fieldErrors?.displayName}
       />
 
-      <label htmlFor="register-email">
+      <label className={labelClass} htmlFor="register-email">
         Email
         <input
           id="register-email"
@@ -84,6 +99,7 @@ export function RegisterForm() {
           autoComplete="email"
           inputMode="email"
           required
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.email)}
           aria-describedby={
             state.fieldErrors?.email ? "register-email-error" : undefined
@@ -95,7 +111,7 @@ export function RegisterForm() {
         message={state.fieldErrors?.email}
       />
 
-      <label htmlFor="register-password">
+      <label className={labelClass} htmlFor="register-password">
         Password
         <input
           id="register-password"
@@ -104,6 +120,7 @@ export function RegisterForm() {
           autoComplete="new-password"
           required
           minLength={6}
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.password)}
           aria-describedby={
             state.fieldErrors?.password
@@ -112,7 +129,7 @@ export function RegisterForm() {
           }
         />
       </label>
-      <p className="form-note" id="register-password-hint">
+      <p className="font-body text-body-sm text-text-muted" id="register-password-hint">
         At least 6 characters.
       </p>
       <FieldError
@@ -120,7 +137,7 @@ export function RegisterForm() {
         message={state.fieldErrors?.password}
       />
 
-      <label htmlFor="register-phone">
+      <label className={labelClass} htmlFor="register-phone">
         Phone
         <input
           id="register-phone"
@@ -128,6 +145,7 @@ export function RegisterForm() {
           type="tel"
           autoComplete="tel"
           inputMode="tel"
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.phone)}
           aria-describedby={
             state.fieldErrors?.phone ? "register-phone-error" : undefined
@@ -139,13 +157,14 @@ export function RegisterForm() {
         message={state.fieldErrors?.phone}
       />
 
-      <label htmlFor="register-locality">
+      <label className={labelClass} htmlFor="register-locality">
         Postcode / area
         <input
           id="register-locality"
           name="locality"
           type="text"
           autoComplete="postal-code"
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.locality)}
           aria-describedby={
             state.fieldErrors?.locality
@@ -159,13 +178,14 @@ export function RegisterForm() {
         message={state.fieldErrors?.locality}
       />
 
-      <label htmlFor="register-involvement">
+      <label className={labelClass} htmlFor="register-involvement">
         How I want to be involved
         <select
           id="register-involvement"
           name="involvement"
           required
           defaultValue=""
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.involvement)}
           aria-describedby={
             state.fieldErrors?.involvement
@@ -188,12 +208,16 @@ export function RegisterForm() {
         message={state.fieldErrors?.involvement}
       />
 
-      <label className="form-consent" htmlFor="register-consent">
+      <label
+        className="flex items-start gap-space-2xs font-body text-body-sm text-text-secondary"
+        htmlFor="register-consent"
+      >
         <input
           id="register-consent"
           name="consent"
           type="checkbox"
           required
+          className="mt-1 h-4 w-4 rounded border-border-strong text-primary focus:ring-primary/20"
           aria-invalid={Boolean(state.fieldErrors?.consent)}
           aria-describedby={
             state.fieldErrors?.consent ? "register-consent-error" : undefined
@@ -209,11 +233,11 @@ export function RegisterForm() {
         message={state.fieldErrors?.consent}
       />
 
-      <div className="form-actions">
-        <button className="btn btn-solid" type="submit" disabled={pending}>
+      <div className="flex flex-wrap gap-space-2xs pt-space-2xs">
+        <button className={btnSolid} type="submit" disabled={pending}>
           {pending ? "Creating account…" : "Create free account"}
         </button>
-        <Link className="btn btn-primary" href="/login">
+        <Link className={btnGhost} href="/login">
           Already a member? Sign in
         </Link>
       </div>

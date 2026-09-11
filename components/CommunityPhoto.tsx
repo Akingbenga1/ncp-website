@@ -1,10 +1,10 @@
 import type { PixabayCredit } from "@/data/pixabay-credits";
+import { cn } from "@/lib/cn";
 
 type CommunityPhotoProps = {
   credit: PixabayCredit;
   className?: string;
   priority?: boolean;
-  /** Intrinsic size for CLS; defaults match common landscape community assets. */
   width?: number;
   height?: number;
 };
@@ -17,10 +17,11 @@ export function CommunityPhoto({
   height = 900,
 }: CommunityPhotoProps) {
   return (
+    // eslint-disable-next-line @next/next/no-img-element
     <img
       src={credit.file}
       alt={credit.alt}
-      className={`community-photo ${className}`.trim()}
+      className={cn("h-full w-full object-cover", className)}
       width={width}
       height={height}
       loading={priority ? "eager" : "lazy"}

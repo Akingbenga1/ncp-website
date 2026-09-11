@@ -34,22 +34,26 @@ export function CookieNotice() {
 
   return (
     <div
-      className="cookie-notice"
+      className="fixed inset-x-0 bottom-0 z-50 border-t border-border-subtle bg-surface-card/95 shadow-elevated backdrop-blur-md"
       role="region"
       aria-label="Cookie notice"
       aria-live="polite"
     >
-      <div className="wrap cookie-notice-inner">
-        <p className="cookie-notice-text">
-          We use essential cookies only — for example to keep you signed in.
-          We do not set analytics or marketing cookies at launch.{" "}
-          <Link href="/cookies">Cookie notice</Link>
+      <div className="mx-auto flex max-w-container-max flex-col items-start gap-space-sm px-gutter-mobile py-space-md sm:flex-row sm:items-center sm:justify-between md:px-gutter-desktop">
+        <p className="font-body text-body-sm text-text-secondary">
+          We use essential cookies only — for example to keep you signed in. We
+          do not set analytics or marketing cookies at launch.{" "}
+          <Link className="font-semibold text-primary hover:underline" href="/cookies">
+            Cookie notice
+          </Link>
           {" · "}
-          <Link href="/privacy">Privacy</Link>
+          <Link className="font-semibold text-primary hover:underline" href="/privacy">
+            Privacy
+          </Link>
         </p>
         <button
           type="button"
-          className="btn btn-primary cookie-notice-dismiss"
+          className="inline-flex shrink-0 items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary shadow-sm transition-all hover:bg-primary-container"
           onClick={dismiss}
         >
           OK

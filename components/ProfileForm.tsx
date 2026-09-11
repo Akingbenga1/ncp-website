@@ -11,6 +11,15 @@ import {
   type MemberProfile,
 } from "@/lib/domain/member";
 
+const inputClass =
+  "mt-space-3xs w-full rounded-lg border border-border-strong bg-surface-card px-space-sm py-space-2xs font-body text-body-md text-on-surface focus:border-primary focus:outline-none focus:ring-2 focus:ring-primary/20 read-only:bg-surface-stone read-only:text-text-muted";
+const labelClass =
+  "flex flex-col font-label text-label-md font-semibold text-text-primary";
+const btnSolid =
+  "inline-flex items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary hover:bg-primary-container disabled:opacity-60";
+const btnGhost =
+  "inline-flex items-center justify-center rounded-lg border border-border-strong bg-surface-card px-space-md py-space-2xs font-label text-label-lg text-primary hover:bg-surface-tinted";
+
 function FieldError({
   id,
   message,
@@ -20,7 +29,7 @@ function FieldError({
 }) {
   if (!message) return null;
   return (
-    <p className="form-field-error" id={id} role="alert">
+    <p className="mt-space-3xs font-body text-body-sm text-error" id={id} role="alert">
       {message}
     </p>
   );
@@ -40,19 +49,25 @@ export function ProfileForm({ profile }: ProfileFormProps) {
     profile.involvement ?? "";
 
   return (
-    <form className="form" action={formAction} noValidate>
+    <form className="flex flex-col gap-space-sm" action={formAction} noValidate>
       {state.status === "success" && state.message ? (
-        <p className="form-status form-status--success" role="status">
+        <p
+          className="rounded-lg bg-surface-tinted px-space-sm py-space-2xs font-body text-body-md text-brand-emerald"
+          role="status"
+        >
           {state.message}
         </p>
       ) : null}
       {state.status === "error" && state.message ? (
-        <p className="form-status form-status--error" role="alert">
+        <p
+          className="rounded-lg bg-error-container px-space-sm py-space-2xs font-body text-body-md text-on-error-container"
+          role="alert"
+        >
           {state.message}
         </p>
       ) : null}
 
-      <label htmlFor="profile-email">
+      <label className={labelClass} htmlFor="profile-email">
         Email
         <input
           id="profile-email"
@@ -62,13 +77,14 @@ export function ProfileForm({ profile }: ProfileFormProps) {
           readOnly
           aria-readonly="true"
           autoComplete="email"
+          className={inputClass}
         />
       </label>
-      <p className="form-note" id="profile-email-hint">
+      <p className="font-body text-body-sm text-text-muted" id="profile-email-hint">
         Email cannot be changed here. Contact NCP if you need to update it.
       </p>
 
-      <label htmlFor="profile-display-name">
+      <label className={labelClass} htmlFor="profile-display-name">
         Full name
         <input
           id="profile-display-name"
@@ -77,6 +93,7 @@ export function ProfileForm({ profile }: ProfileFormProps) {
           autoComplete="name"
           required
           defaultValue={profile.displayName}
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.displayName)}
           aria-describedby={
             state.fieldErrors?.displayName
@@ -90,7 +107,7 @@ export function ProfileForm({ profile }: ProfileFormProps) {
         message={state.fieldErrors?.displayName}
       />
 
-      <label htmlFor="profile-phone">
+      <label className={labelClass} htmlFor="profile-phone">
         Phone
         <input
           id="profile-phone"
@@ -99,6 +116,7 @@ export function ProfileForm({ profile }: ProfileFormProps) {
           autoComplete="tel"
           inputMode="tel"
           defaultValue={profile.phone ?? ""}
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.phone)}
           aria-describedby={
             state.fieldErrors?.phone ? "profile-phone-error" : undefined
@@ -110,7 +128,7 @@ export function ProfileForm({ profile }: ProfileFormProps) {
         message={state.fieldErrors?.phone}
       />
 
-      <label htmlFor="profile-locality">
+      <label className={labelClass} htmlFor="profile-locality">
         Postcode / area
         <input
           id="profile-locality"
@@ -118,6 +136,7 @@ export function ProfileForm({ profile }: ProfileFormProps) {
           type="text"
           autoComplete="postal-code"
           defaultValue={profile.locality ?? ""}
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.locality)}
           aria-describedby={
             state.fieldErrors?.locality
@@ -131,13 +150,14 @@ export function ProfileForm({ profile }: ProfileFormProps) {
         message={state.fieldErrors?.locality}
       />
 
-      <label htmlFor="profile-involvement">
+      <label className={labelClass} htmlFor="profile-involvement">
         How I want to be involved
         <select
           id="profile-involvement"
           name="involvement"
           required
           defaultValue={involvementDefault}
+          className={inputClass}
           aria-invalid={Boolean(state.fieldErrors?.involvement)}
           aria-describedby={
             state.fieldErrors?.involvement
@@ -161,16 +181,16 @@ export function ProfileForm({ profile }: ProfileFormProps) {
       />
 
       {profile.consentGiven ? (
-        <p className="form-note">
+        <p className="font-body text-body-sm text-text-muted">
           GDPR consent was recorded when you registered.
         </p>
       ) : null}
 
-      <div className="form-actions">
-        <button className="btn btn-solid" type="submit" disabled={pending}>
+      <div className="flex flex-wrap gap-space-2xs pt-space-2xs">
+        <button className={btnSolid} type="submit" disabled={pending}>
           {pending ? "Saving…" : "Save profile"}
         </button>
-        <Link className="btn btn-primary" href="/get-involved">
+        <Link className={btnGhost} href="/get-involved">
           Get involved
         </Link>
       </div>
@@ -181,8 +201,8 @@ export function ProfileForm({ profile }: ProfileFormProps) {
 /** Sign-out control kept outside the profile form (no nested forms). */
 export function ProfileSignOut() {
   return (
-    <form action={logoutAction} className="form-actions">
-      <button className="btn btn-primary" type="submit">
+    <form action={logoutAction} className="mt-space-md flex flex-wrap gap-space-2xs">
+      <button className={btnGhost} type="submit">
         Sign out
       </button>
     </form>

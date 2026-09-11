@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useCallback, useEffect, useId, useRef, useState } from "react";
 import type { TouchEvent } from "react";
 import type { PixabayCredit } from "@/data/pixabay-credits";
+import { cn } from "@/lib/cn";
 
 const INTERVAL_MS = 7000;
 
@@ -69,7 +70,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
 
   return (
     <div
-      className="hero-carousel hero-carousel--full"
+      className="relative w-full"
       role="region"
       aria-roledescription="carousel"
       aria-labelledby={labelId}
@@ -84,59 +85,73 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
       onTouchStart={onTouchStart}
       onTouchEnd={onTouchEnd}
     >
-      <p id={labelId} className="visually-hidden">
+      <p id={labelId} className="sr-only">
         Featured stories from Nigerian Community Peterborough
       </p>
 
-      <div className="hero-carousel-track" aria-live="polite" aria-atomic="true">
+      <div className="relative min-h-[70vh]" aria-live="polite" aria-atomic="true">
         {slides.map((slide, i) => {
           const isActive = i === index;
 
           return (
             <article
               key={slide.id}
-              className={`hero-carousel-item${isActive ? " is-active" : ""}`}
+              className={cn(
+                "absolute inset-0 transition-opacity duration-700 ease-out",
+                isActive ? "z-10 opacity-100" : "z-0 opacity-0",
+              )}
               aria-hidden={!isActive}
               inert={!isActive ? true : undefined}
-              data-reduced={reducedMotion ? "true" : undefined}
             >
-              <div className="hero-grid hero-grid-photo">
-                <div className="hero-copy">
-                  <p className="hero-kicker">{slide.kicker}</p>
-                  <h1 id={isActive ? "hero-heading" : undefined}>{slide.title}</h1>
-                  <p className="hero-lead">{slide.lead}</p>
-                  <Link className="btn btn-primary" href={slide.cta.href} tabIndex={isActive ? 0 : -1}>
-                    {slide.cta.label}
-                  </Link>
-                </div>
+              <div className="absolute inset-0">
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={slide.photo.file}
+                  alt={isActive ? slide.photo.alt : ""}
+                  className="h-full w-full object-cover"
+                  width={1200}
+                  height={900}
+                  loading={i === 0 ? "eager" : "lazy"}
+                  decoding="async"
+                  fetchPriority={i === 0 ? "high" : "auto"}
+                  draggable={false}
+                />
+                <div
+                  className="absolute inset-0 bg-gradient-to-t from-primary/90 via-primary/50 to-primary/20"
+                  aria-hidden="true"
+                />
+              </div>
 
-                <div className="hero-photo-wrap">
-                  <div className="hero-photo hero-photo-frame">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={slide.photo.file}
-                      alt={isActive ? slide.photo.alt : ""}
-                      className="hero-carousel-image"
-                      width={1200}
-                      height={900}
-                      loading={i === 0 ? "eager" : "lazy"}
-                      decoding="async"
-                      fetchPriority={i === 0 ? "high" : "auto"}
-                      draggable={false}
-                    />
-                    <div className="hero-carousel-veil" aria-hidden="true" />
-                  </div>
-                </div>
+              <div className="relative z-10 flex h-full max-w-container-max flex-col justify-end px-gutter-mobile pb-space-3xl pt-space-3xl md:px-gutter-desktop">
+                <p className="font-label text-label-eyebrow uppercase tracking-widest text-brand-mint">
+                  {slide.kicker}
+                </p>
+                <h1
+                  id={isActive ? "hero-heading" : undefined}
+                  className="mt-space-2xs max-w-3xl font-display text-display-lg-mobile font-extrabold tracking-tight text-on-primary md:text-display-lg"
+                >
+                  {slide.title}
+                </h1>
+                <p className="mt-space-sm max-w-xl font-body text-body-lg text-surface-container-low">
+                  {slide.lead}
+                </p>
+                <Link
+                  className="mt-space-md inline-flex w-fit items-center justify-center rounded-lg bg-brand-mint px-space-md py-space-xs font-label text-label-lg text-primary hover:bg-primary-fixed"
+                  href={slide.cta.href}
+                  tabIndex={isActive ? 0 : -1}
+                >
+                  {slide.cta.label}
+                </Link>
               </div>
             </article>
           );
         })}
       </div>
 
-      <div className="hero-carousel-controls hero-carousel-controls--bar">
+      <div className="absolute inset-x-0 bottom-space-md z-20 flex items-center justify-center gap-space-sm px-gutter-mobile md:px-gutter-desktop">
         <button
           type="button"
-          className="hero-carousel-nav"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-card/90 text-primary shadow-sm backdrop-blur-sm hover:bg-surface-card"
           onClick={goPrev}
           aria-label="Previous story"
         >
@@ -148,13 +163,16 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
           </svg>
         </button>
 
-        <div className="hero-carousel-dots" role="tablist" aria-label="Choose story">
+        <div className="flex gap-space-3xs" role="tablist" aria-label="Choose story">
           {slides.map((slide, i) => (
             <button
               key={slide.id}
               type="button"
               role="tab"
-              className={`hero-carousel-dot${i === index ? " is-active" : ""}`}
+              className={cn(
+                "h-2.5 w-2.5 rounded-full transition-colors",
+                i === index ? "bg-brand-mint" : "bg-on-primary/40 hover:bg-on-primary/70",
+              )}
               aria-selected={i === index}
               aria-label={`${slide.title} (${i + 1} of ${slides.length})`}
               onClick={() => goTo(i)}
@@ -164,7 +182,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
 
         <button
           type="button"
-          className="hero-carousel-nav"
+          className="flex h-10 w-10 items-center justify-center rounded-full bg-surface-card/90 text-primary shadow-sm backdrop-blur-sm hover:bg-surface-card"
           onClick={goNext}
           aria-label="Next story"
         >
@@ -177,7 +195,7 @@ export function HeroCarousel({ slides }: HeroCarouselProps) {
         </button>
       </div>
 
-      <p className="visually-hidden">
+      <p className="sr-only">
         Showing story {index + 1} of {slides.length}: {active.title}
       </p>
     </div>

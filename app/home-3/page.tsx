@@ -3,6 +3,7 @@ import Link from "next/link";
 import { Home3Hero } from "@/components/Home3Hero";
 import { Pillars } from "@/components/Pillars";
 import { Reveal } from "@/components/Reveal";
+import { cn } from "@/lib/cn";
 
 export const metadata: Metadata = {
   title: "Home 3",
@@ -62,41 +63,53 @@ const featureSections = [
 
 export default function HomeThreePage() {
   return (
-    <main id="main" className="home-variant home-variant-3">
+    <main id="main" className="flex w-full flex-col bg-surface">
       <Home3Hero />
 
-      <Reveal as="section" className="section home3-below" variant="up">
-        <div className="wrap">
-          <p className="kicker">Belonging in the UK</p>
-          <h2 className="section-title">One community. Three pillars.</h2>
-          <p className="section-lead home3-below-lead">
-            From Peterborough streets to family tables — we grow stronger when
-            culture, care, and connection stay close.
-          </p>
-          <Pillars
-            illustrations={[
-              {
-                src: "/images/home-3/illust-community.jpg",
-                alt: "Symbolic flat illustration of community members standing together",
-              },
-              {
-                src: "/images/home-3/illust-culture.jpg",
-                alt: "Symbolic flat illustration celebrating culture and heritage",
-              },
-              {
-                src: "/images/home-3/illust-connection.jpg",
-                alt: "Symbolic flat illustration of people connected together",
-              },
-            ]}
-          />
-          <div className="home3-below-actions">
-            <Link className="btn btn-primary" href="/about">
-              About us
-            </Link>
-            <Link className="btn btn-solid" href="/get-involved">
-              Get involved
-            </Link>
-          </div>
+      <Reveal
+        as="section"
+        className="mx-auto w-full max-w-container-max px-gutter-mobile py-space-2xl md:px-gutter-desktop"
+        variant="up"
+      >
+        <p className="font-label text-label-eyebrow uppercase tracking-widest text-brand-emerald">
+          Belonging in the UK
+        </p>
+        <h2 className="mt-space-2xs font-headline text-headline-lg font-bold text-primary">
+          One community. Three pillars.
+        </h2>
+        <p className="mt-space-sm mb-space-lg max-w-2xl font-body text-body-lg text-text-secondary">
+          From Peterborough streets to family tables — we grow stronger when
+          culture, care, and connection stay close.
+        </p>
+        <Pillars
+          illustrations={[
+            {
+              src: "/images/home-3/illust-community.jpg",
+              alt: "Symbolic flat illustration of community members standing together",
+            },
+            {
+              src: "/images/home-3/illust-culture.jpg",
+              alt: "Symbolic flat illustration celebrating culture and heritage",
+            },
+            {
+              src: "/images/home-3/illust-connection.jpg",
+              alt: "Symbolic flat illustration of people connected together",
+            },
+          ]}
+        />
+        <div className="mt-space-lg flex flex-wrap gap-space-2xs">
+          <Link
+            className="inline-flex items-center justify-center rounded-lg border border-border-strong bg-surface-card px-space-md py-space-2xs font-label text-label-lg text-primary hover:bg-surface-tinted"
+            href="/about"
+          >
+            About us
+          </Link>
+          <Link
+            className="inline-flex items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary hover:bg-primary-container"
+            href="/get-involved"
+          >
+            Get involved
+          </Link>
         </div>
       </Reveal>
 
@@ -104,36 +117,44 @@ export default function HomeThreePage() {
         <Reveal
           key={feature.id}
           as="section"
-          className={
-            feature.reverse
-              ? "section home3-feature home3-feature--alt"
-              : "section home3-feature"
-          }
+          className={cn(
+            "mx-auto w-full max-w-container-max px-gutter-mobile py-space-xl md:px-gutter-desktop",
+            feature.reverse && "bg-surface-stone",
+          )}
           variant={index % 2 === 0 ? "left" : "right"}
         >
           <div
-            className={
-              feature.reverse
-                ? "wrap home3-feature-grid home3-feature-grid--reverse"
-                : "wrap home3-feature-grid"
-            }
+            className={cn(
+              "grid items-center gap-space-lg md:grid-cols-2",
+              feature.reverse && "md:[&>*:first-child]:order-2",
+            )}
           >
-            <div className="home3-feature-copy">
-              <p className="kicker">{feature.kicker}</p>
-              <h2 id={`${feature.id}-heading`} className="section-title">
+            <div>
+              <p className="font-label text-label-eyebrow uppercase tracking-widest text-brand-emerald">
+                {feature.kicker}
+              </p>
+              <h2
+                id={`${feature.id}-heading`}
+                className="mt-space-2xs font-headline text-headline-lg font-bold text-primary"
+              >
                 {feature.title}
               </h2>
-              <p className="section-lead">{feature.lead}</p>
-              <ul className="home3-feature-list">
+              <p className="mt-space-sm font-body text-body-lg text-text-secondary">
+                {feature.lead}
+              </p>
+              <ul className="mt-space-md list-disc space-y-space-2xs pl-space-md font-body text-body-md text-text-secondary">
                 {feature.points.map((point) => (
                   <li key={point}>{point}</li>
                 ))}
               </ul>
-              <Link className="btn btn-primary" href={feature.cta.href}>
+              <Link
+                className="mt-space-md inline-flex items-center justify-center rounded-lg bg-primary px-space-md py-space-2xs font-label text-label-lg text-on-primary hover:bg-primary-container"
+                href={feature.cta.href}
+              >
                 {feature.cta.label}
               </Link>
             </div>
-            <figure className="home3-feature-media">
+            <figure className="overflow-hidden rounded-2xl shadow-card">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
                 src={feature.image}
@@ -142,6 +163,7 @@ export default function HomeThreePage() {
                 height={900}
                 loading="lazy"
                 decoding="async"
+                className="aspect-square w-full object-cover"
               />
             </figure>
           </div>
