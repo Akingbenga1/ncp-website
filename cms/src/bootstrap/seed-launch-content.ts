@@ -85,8 +85,9 @@ After you join, you can update your profile any time. Admins will use membership
 ];
 
 /**
- * Starter directory — real NCP org only. Do not invent finished businesses.
- * Client adds real listings + photo rights via NH-9.
+ * Starter directory — NCP org + one existing business, plus one NCP programme
+ * placeholder per remaining Market category so empty-state chips can be exercised.
+ * Do not invent private shops; client adds real listings + photo rights via NH-9.
  */
 const LAUNCH_LISTINGS: SeedListing[] = [
   {
@@ -98,6 +99,56 @@ const LAUNCH_LISTINGS: SeedListing[] = [
     contactEmail: "theresa.okogwa@naijacp.co.uk",
     summary:
       "NCP connects Nigerian families and friends across Peterborough through events, news, membership, and community support. Contact Theresa Okogwa or the EXCO line to get involved, suggest a directory listing, or ask about volunteering.",
+  },
+  {
+    name: "Mama T's Kitchen & Catering",
+    slug: "mama-ts-kitchen-catering",
+    category: "business",
+    locality: "PE1 Central, Peterborough",
+    contactPhone: "+44 7737 742387",
+    contactEmail: "theresa.okogwa@naijacp.co.uk",
+    summary:
+      "Authentic Nigerian party jollof, goat meat pepper soup, puff-puff trays, fried plantain, and bespoke event catering across Cambridgeshire. Food for naming ceremonies, family celebrations, and weekend takeaway.",
+  },
+  {
+    name: "Peterborough Nigerian Christian Fellowship",
+    slug: "peterborough-nigerian-christian-fellowship",
+    category: "church",
+    locality: "Peterborough",
+    contactPhone: "+44 7737 742387",
+    contactEmail: "theresa.okogwa@naijacp.co.uk",
+    summary:
+      "Sunday fellowship and midweek prayer for Nigerian families in Peterborough. Contact NCP for gathering times and how to join.",
+  },
+  {
+    name: "NCP Women's Network",
+    slug: "ncp-womens-network",
+    category: "association",
+    locality: "Peterborough",
+    contactPhone: "+44 7737 742387",
+    contactEmail: "theresa.okogwa@naijacp.co.uk",
+    summary:
+      "Peer support, skills sharing, and social gatherings for women in the NCP community. Ask Theresa how to take part.",
+  },
+  {
+    name: "NCP New Arrival Advice",
+    slug: "ncp-new-arrival-advice",
+    category: "service",
+    locality: "Peterborough",
+    contactPhone: "+44 7737 742387",
+    contactEmail: "theresa.okogwa@naijacp.co.uk",
+    summary:
+      "Signposting for families new to Peterborough — housing, schools, and community welcome. NCP does not give legal advice; we help you find the right door.",
+  },
+  {
+    name: "NCP Youth Circle",
+    slug: "ncp-youth-circle",
+    category: "other",
+    locality: "Peterborough",
+    contactPhone: "+44 7737 742387",
+    contactEmail: "theresa.okogwa@naijacp.co.uk",
+    summary:
+      "Informal youth hangouts and mentoring alongside NCP family events. Message the EXCO line if a young person in your household wants to join.",
   },
 ];
 

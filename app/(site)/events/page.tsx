@@ -84,6 +84,13 @@ export default async function EventsPage() {
                   <MaterialIcon name="add_circle" className="text-[20px]" />
                   <span>Suggest an Event</span>
                 </a>
+                <a
+                  href="#archives"
+                  className="inline-flex items-center gap-space-3xs rounded-xl bg-primary-container px-space-md py-space-xs font-label text-label-lg text-on-primary transition-all hover:bg-surface-tint"
+                >
+                  <MaterialIcon name="photo_library" className="text-[20px]" />
+                  <span>View Community Archive</span>
+                </a>
               </div>
               <div className="grid w-full max-w-lg grid-cols-3 gap-space-xs pt-space-sm">
                 <div className="flex flex-col rounded-xl bg-primary-container/60 p-space-xs">
@@ -171,7 +178,11 @@ export default async function EventsPage() {
         <EventsCalendar events={events} />
 
         {/* Archives */}
-        <section className="mb-space-3xl" aria-labelledby="archives-heading">
+        <section
+          id="archives"
+          className="mb-space-3xl scroll-mt-24"
+          aria-labelledby="archives-heading"
+        >
           <div className="mb-space-md flex flex-col justify-between gap-space-xs md:flex-row md:items-end">
             <div>
               <span className="font-label text-label-eyebrow font-bold tracking-wider text-secondary uppercase">
@@ -188,13 +199,6 @@ export default async function EventsPage() {
                 milestones we celebrated together.
               </p>
             </div>
-            <Link
-              href="/about"
-              className="inline-flex items-center gap-1 font-label text-label-lg font-bold text-primary hover:text-brand-emerald"
-            >
-              <span>View Community Archive</span>
-              <MaterialIcon name="photo_library" className="text-[18px]" />
-            </Link>
           </div>
           <div className="grid grid-cols-1 gap-space-md md:grid-cols-3">
             {archives.map((item) => (

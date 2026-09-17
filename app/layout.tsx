@@ -1,8 +1,6 @@
 import type { Metadata } from "next";
 import { Inter, Plus_Jakarta_Sans } from "next/font/google";
 import { CookieNotice } from "@/components/CookieNotice";
-import { Footer } from "@/components/Footer";
-import { Header } from "@/components/Header";
 import { ScrollProgress } from "@/components/ScrollProgress";
 import { SkipLink } from "@/components/SkipLink";
 import { getSiteUrl } from "@/lib/site-url";
@@ -70,9 +68,7 @@ export default function RootLayout({
       <body className="flex min-h-screen flex-col">
         <ScrollProgress />
         <SkipLink />
-        <Header />
-        <div className="flex-1">{children}</div>
-        <Footer />
+        {children}
         <CookieNotice />
       </body>
     </html>

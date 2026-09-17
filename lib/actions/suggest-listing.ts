@@ -58,13 +58,59 @@ export async function suggestListingAction(
 ): Promise<SuggestListingState> {
   const name = readString(formData, "name");
   const categoryRaw = readString(formData, "category");
-  const description = readString(formData, "description");
+  const tagline = readString(formData, "tagline");
+  const descriptionRaw = readString(formData, "description");
   const locality = readString(formData, "locality");
   const contactEmail = readString(formData, "contactEmail");
-  const contactPhone = readString(formData, "contactPhone");
+  const whatsapp = readString(formData, "whatsapp");
+  const contactPhoneRaw = readString(formData, "contactPhone");
   const websiteUrl = readString(formData, "websiteUrl");
   const submittedByEmail = readString(formData, "submittedByEmail");
+  const promoOffer = readString(formData, "promoOffer");
   const consentGiven = formData.get("consent") === "on";
+  const deliveryModes = formData
+    .getAll("deliveryModes")
+    .filter((v): v is string => typeof v === "string" && v.trim().length > 0)
+    .map((v) => v.trim());
+  const priceItems = formData
+    .getAll("priceItem")
+    .filter((v): v is string => typeof v === "string")
+    .map((v) => v.trim());
+  const priceAmounts = formData
+    .getAll("priceAmount")
+    .filter((v): v is string => typeof v === "string")
+    .map((v) => v.trim());
+
+  const priceLines = priceItems
+    .map((item, index) => {
+      const amount = priceAmounts[index]?.trim();
+      if (!item) return null;
+      return amount ? `${item} — from £${amount}` : item;
+    })
+    .filter(Boolean);
+
+  const descriptionParts = [
+    tagline ? `Tagline: ${tagline}` : null,
+    descriptionRaw || null,
+    deliveryModes.length > 0
+      ? `Fulfillment: ${deliveryModes.join(", ")}`
+      : null,
+    priceLines.length > 0
+      ? `Popular items & rates:\n${priceLines.map((line) => `• ${line}`).join("\n")}`
+      : null,
+    promoOffer ? `Community perk: ${promoOffer}` : null,
+  ].filter(Boolean);
+  const description = descriptionParts.join("\n\n");
+
+  let contactPhone = contactPhoneRaw || whatsapp;
+  if (whatsapp && !contactPhoneRaw) {
+    const digits = whatsapp.replace(/\D/g, "");
+    contactPhone = digits.startsWith("44")
+      ? `+${digits}`
+      : digits
+        ? `+44${digits.replace(/^0/, "")}`
+        : whatsapp;
+  }
 
   const fieldErrors: SuggestListingState["fieldErrors"] = {};
 
@@ -72,7 +118,7 @@ export async function suggestListingAction(
   if (!isListingCategory(categoryRaw)) {
     fieldErrors.category = "Choose a category.";
   }
-  if (!description) {
+  if (!descriptionRaw && !tagline) {
     fieldErrors.description = "Add a short description.";
   }
   if (!consentGiven) {
@@ -82,8 +128,10 @@ export async function suggestListingAction(
   if (!isValidOptionalEmail(contactEmail)) {
     fieldErrors.contactEmail = "Enter a valid email, or leave blank.";
   }
-  if (!isValidOptionalEmail(submittedByEmail)) {
-    fieldErrors.submittedByEmail = "Enter a valid email, or leave blank.";
+  if (!submittedByEmail) {
+    fieldErrors.submittedByEmail = "Enter your contact email.";
+  } else if (!isValidOptionalEmail(submittedByEmail)) {
+    fieldErrors.submittedByEmail = "Enter a valid email.";
   }
   if (!isValidOptionalUrl(websiteUrl)) {
     fieldErrors.websiteUrl =
@@ -137,7 +185,7 @@ export async function suggestListingAction(
       "",
       description,
       "",
-      contactPhone ? `Phone: ${contactPhone}` : null,
+      contactPhone ? `Phone / WhatsApp: ${contactPhone}` : null,
       contactEmail ? `Listing email: ${contactEmail}` : null,
       websiteUrl ? `Website: ${websiteUrl}` : null,
       submittedByEmail ? `Submitted by: ${submittedByEmail}` : null,
