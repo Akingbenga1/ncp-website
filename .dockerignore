@@ -6,11 +6,8 @@ node_modules
 .vercel
 Sprints
 Project-documents
-cms/node_modules
-cms/.cache
-cms/.tmp
-cms/build
-cms/dist
+# Strapi lives in its own Railway service — keep it out of the Next build
+cms
 *.log
 .env
 .env*.local
