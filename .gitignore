@@ -48,6 +48,9 @@ yarn-debug.log*
 yarn-error.log*
 *.log
 
+# Community dues MVP local store (receipts + status records)
+.data/
+
 # Caches / test output
 .turbo/
 .eslintcache

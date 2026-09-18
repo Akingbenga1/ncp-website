@@ -111,6 +111,22 @@ export function Footer() {
               <li>
                 <Link
                   className="transition-colors hover:text-brand-mint"
+                  href="/dues"
+                >
+                  Pay Dues
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="transition-colors hover:text-brand-mint"
+                  href="/news"
+                >
+                  News
+                </Link>
+              </li>
+              <li>
+                <Link
+                  className="transition-colors hover:text-brand-mint"
                   href="/donation"
                 >
                   Donation

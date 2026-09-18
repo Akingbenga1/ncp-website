@@ -2,10 +2,12 @@
 
 import { useState } from "react";
 import Link from "next/link";
+import { DuesStatusBadge, PayDuesCta } from "@/components/DuesStatusBadge";
 import { MaterialIcon } from "@/components/MaterialIcon";
 import { logoutAction, updateProfileAction } from "@/lib/actions/auth";
 import { initialProfileState } from "@/lib/actions/auth-state";
 import { useActionState } from "react";
+import type { DuesPeriodStatus } from "@/lib/domain/dues";
 import {
   INVOLVEMENT_INTERESTS,
   involvementInterestLabel,
@@ -223,12 +225,16 @@ type ProfileHeroActionsProps = {
   displayName: string;
   memberCode: string;
   email: string;
+  duesStatus: DuesPeriodStatus;
+  duesPeriodEndsAt?: string | null;
 };
 
 export function ProfileHeroActions({
   displayName,
   memberCode,
   email,
+  duesStatus,
+  duesPeriodEndsAt,
 }: ProfileHeroActionsProps) {
   const [passOpen, setPassOpen] = useState(false);
   const [shareNote, setShareNote] = useState<string | null>(null);
@@ -270,6 +276,16 @@ export function ProfileHeroActions({
           <MaterialIcon name="edit_note" className="text-[18px]" />
           <span>Edit Profile</span>
         </a>
+        {duesStatus === "due" ? (
+          <PayDuesCta />
+        ) : (
+          <div className="inline-flex flex-1 items-center justify-center lg:flex-none">
+            <DuesStatusBadge
+              status={duesStatus}
+              periodEndsAt={duesPeriodEndsAt}
+            />
+          </div>
+        )}
       </div>
       {shareNote ? (
         <p className="mt-space-2xs font-body text-body-sm text-brand-emerald" role="status">

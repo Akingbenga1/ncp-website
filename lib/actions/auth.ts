@@ -163,7 +163,10 @@ export async function loginAction(
     };
   }
 
-  redirect("/profile");
+  const nextRaw = readString(formData, "next");
+  const next =
+    nextRaw.startsWith("/") && !nextRaw.startsWith("//") ? nextRaw : "/profile";
+  redirect(next);
 }
 
 /** Sign out via AuthPort; clears httpOnly session cookie behind the port. */

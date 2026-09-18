@@ -5,6 +5,7 @@ import {
   noopMemberAdapter,
   noopSearchAdapter,
 } from "@/lib/adapters/noop";
+import { createDuesAdapterFromEnv } from "@/lib/adapters/dues";
 import { createMailAdapterFromEnv } from "@/lib/adapters/mail";
 import { createPaymentAdapterFromEnv } from "@/lib/adapters/stripe";
 import {
@@ -18,6 +19,7 @@ import type {
   AuthPort,
   ContentPort,
   DirectoryPort,
+  DuesPort,
   MailPort,
   MemberPort,
   PaymentPort,
@@ -35,6 +37,7 @@ export type AppServices = {
   auth: AuthPort;
   members: MemberPort;
   payments: PaymentPort;
+  dues: DuesPort;
   search: SearchPort;
   mail: MailPort;
 };
@@ -97,6 +100,14 @@ function defaultPaymentPort(): PaymentPort {
 }
 
 /**
+ * Default DuesPort: file-backed Community Dues (separate from donations).
+ * Set DUES_ADAPTER=noop to force no-op (tests / isolation).
+ */
+function defaultDuesPort(): DuesPort {
+  return createDuesAdapterFromEnv();
+}
+
+/**
  * Default SearchPort: Strapi filter adapter (Sprint 7).
  * Set SEARCH_ADAPTER=noop to force the no-op (tests / CMS offline isolation).
  */
@@ -109,7 +120,7 @@ function defaultSearchPort(): SearchPort {
 
 /**
  * Factory Method: build the service graph.
- * Content, Directory, Auth, Members, Mail, Payments, and Search are env-selected.
+ * Content, Directory, Auth, Members, Mail, Payments, Dues, and Search are env-selected.
  */
 export function createAppServices(
   overrides: CreateAppServicesOptions = {},
@@ -122,6 +133,7 @@ export function createAppServices(
     auth: overrides.auth ?? authBundle.auth,
     members: overrides.members ?? authBundle.members,
     payments: overrides.payments ?? defaultPaymentPort(),
+    dues: overrides.dues ?? defaultDuesPort(),
     search: overrides.search ?? defaultSearchPort(),
     mail: overrides.mail ?? defaultMailPort(),
   };

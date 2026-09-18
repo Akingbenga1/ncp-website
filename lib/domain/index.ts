@@ -52,6 +52,24 @@ export type {
 } from "./payment";
 
 export type {
+  ConfirmDuesCheckoutInput,
+  CreateDuesCheckoutInput,
+  DuesCheckoutSession,
+  DuesPaymentMethod,
+  DuesPeriodStatus,
+  DuesRecord,
+  MemberDuesStatus,
+  SubmitDuesReceiptInput,
+} from "./dues";
+export {
+  COMMUNITY_DUES_AMOUNT_GBP,
+  COMMUNITY_DUES_PERIOD_DAYS,
+  isAllowedReceiptMime,
+  isPeriodActive,
+  periodEndsAtIso,
+} from "./dues";
+
+export type {
   SearchHit,
   SearchHitKind,
   SearchQuery,

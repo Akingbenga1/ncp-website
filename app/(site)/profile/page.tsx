@@ -69,7 +69,7 @@ const ENGAGE = [
 ] as const;
 
 export default async function ProfilePage() {
-  const { auth, members } = getAppServices();
+  const { auth, members, dues } = getAppServices();
   const session = await auth.getSession();
   if (!session) {
     redirect("/login");
@@ -79,6 +79,8 @@ export default async function ProfilePage() {
   if (!profile) {
     redirect("/login");
   }
+
+  const duesStatus = await dues.getStatusForMember(profile.id, profile.email);
 
   const memberCode = formatMemberCode(profile.id);
   const initials = initialsFromName(profile.displayName);
@@ -168,6 +170,8 @@ export default async function ProfilePage() {
                     displayName={profile.displayName}
                     memberCode={memberCode}
                     email={profile.email}
+                    duesStatus={duesStatus.status}
+                    duesPeriodEndsAt={duesStatus.periodEndsAt}
                   />
                 </div>
               </div>

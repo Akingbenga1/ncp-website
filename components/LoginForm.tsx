@@ -27,9 +27,11 @@ function FieldError({
 type LoginFormProps = {
   /** When already signed in, show logout instead of the login form. */
   signedInAs?: string | null;
+  /** Safe same-origin path to open after login (e.g. /dues). */
+  nextPath?: string;
 };
 
-export function LoginForm({ signedInAs }: LoginFormProps) {
+export function LoginForm({ signedInAs, nextPath }: LoginFormProps) {
   const [state, formAction, pending] = useActionState(
     loginAction,
     initialLoginState,
@@ -88,6 +90,7 @@ export function LoginForm({ signedInAs }: LoginFormProps) {
       </div>
 
       <form className="space-y-5" action={formAction} noValidate>
+        {nextPath ? <input type="hidden" name="next" value={nextPath} /> : null}
         {state.status === "error" && state.message ? (
           <p
             className="rounded-xl bg-error-container px-space-sm py-space-2xs font-body text-body-md text-on-error-container"

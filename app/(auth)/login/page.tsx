@@ -34,8 +34,16 @@ const BENEFITS = [
   },
 ] as const;
 
-export default async function LoginPage() {
+export default async function LoginPage({
+  searchParams,
+}: {
+  searchParams: Promise<{ next?: string }>;
+}) {
   const session = await getAppServices().auth.getSession();
+  const params = await searchParams;
+  const nextRaw = params.next?.trim() ?? "";
+  const nextPath =
+    nextRaw.startsWith("/") && !nextRaw.startsWith("//") ? nextRaw : undefined;
 
   return (
     <main id="main" className="w-full flex-1">
@@ -92,7 +100,10 @@ export default async function LoginPage() {
         </div>
 
         <div className="grid grid-cols-1 items-start gap-8 lg:grid-cols-12">
-          <LoginForm signedInAs={session?.displayName ?? null} />
+          <LoginForm
+            signedInAs={session?.displayName ?? null}
+            nextPath={nextPath}
+          />
 
           <aside className="flex flex-col gap-6 lg:col-span-5">
             <div className="rounded-2xl bg-surface-tinted p-6 shadow-sm sm:p-8">
