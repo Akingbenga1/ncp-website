@@ -50,6 +50,10 @@ async function ensureMemberAuthPermissions(strapi: Core.Strapi) {
     "plugin::users-permissions.user.me",
     "plugin::users-permissions.user.findOne",
     "plugin::users-permissions.user.update",
+    "api::community-due.community-due.find",
+    "api::community-due.community-due.findOne",
+    "api::community-due.community-due.create",
+    "plugin::upload.content-api.upload",
   ] as const;
 
   for (const action of actions) {
@@ -81,6 +85,19 @@ async function ensureMemberAuthPermissions(strapi: Core.Strapi) {
       },
     });
   }
+}
+
+/**
+ * Community dues are written by the Next.js DuesPort via STRAPI_API_TOKEN
+ * (not public). No Public role access — keep payment records private.
+ * Authenticated role also gets no open findAll; server uses the API token.
+ */
+async function ensureCommunityDuesPrivate(strapi: Core.Strapi) {
+  // Intentionally no Public permissions for api::community-due.*.
+  // Full-access API tokens cover create/find/update + upload for the web app.
+  strapi.log.info(
+    "Community dues: Content API is private (API token / admin only).",
+  );
 }
 
 async function isValidApiToken(
@@ -168,6 +185,7 @@ export default {
   async bootstrap({ strapi }: { strapi: Core.Strapi }) {
     await ensurePublicContentRead(strapi);
     await ensureMemberAuthPermissions(strapi);
+    await ensureCommunityDuesPrivate(strapi);
     await seedLaunchContent(strapi);
   },
 };

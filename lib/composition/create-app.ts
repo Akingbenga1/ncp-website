@@ -67,18 +67,26 @@ function defaultDirectoryPort(): DirectoryPort {
 }
 
 /**
- * Default AuthPort + MemberPort: Strapi adapters sharing one cookie store (Sprint 5).
+ * Default AuthPort + MemberPort + DuesPort share one cookie credential store.
  * Set AUTH_ADAPTER=noop to force no-ops (tests / CMS offline isolation).
  */
-function defaultAuthAndMembers(): Pick<AppServices, "auth" | "members"> {
+function defaultAuthMembersAndDues(): Pick<
+  AppServices,
+  "auth" | "members" | "dues"
+> {
   if (process.env.AUTH_ADAPTER?.trim().toLowerCase() === "noop") {
-    return { auth: noopAuthAdapter, members: noopMemberAdapter };
+    return {
+      auth: noopAuthAdapter,
+      members: noopMemberAdapter,
+      dues: createDuesAdapterFromEnv(process.env),
+    };
   }
 
   const credentials = createCookieCredentialStore();
   return {
     auth: createStrapiAuthAdapter({ credentials }),
     members: createStrapiMemberAdapter({ credentials }),
+    dues: createDuesAdapterFromEnv(process.env, { credentials }),
   };
 }
 
@@ -100,14 +108,6 @@ function defaultPaymentPort(): PaymentPort {
 }
 
 /**
- * Default DuesPort: file-backed Community Dues (separate from donations).
- * Set DUES_ADAPTER=noop to force no-op (tests / isolation).
- */
-function defaultDuesPort(): DuesPort {
-  return createDuesAdapterFromEnv();
-}
-
-/**
  * Default SearchPort: Strapi filter adapter (Sprint 7).
  * Set SEARCH_ADAPTER=noop to force the no-op (tests / CMS offline isolation).
  */
@@ -125,7 +125,7 @@ function defaultSearchPort(): SearchPort {
 export function createAppServices(
   overrides: CreateAppServicesOptions = {},
 ): AppServices {
-  const authBundle = defaultAuthAndMembers();
+  const authBundle = defaultAuthMembersAndDues();
 
   return {
     content: overrides.content ?? defaultContentPort(),
@@ -133,7 +133,7 @@ export function createAppServices(
     auth: overrides.auth ?? authBundle.auth,
     members: overrides.members ?? authBundle.members,
     payments: overrides.payments ?? defaultPaymentPort(),
-    dues: overrides.dues ?? defaultDuesPort(),
+    dues: overrides.dues ?? authBundle.dues,
     search: overrides.search ?? defaultSearchPort(),
     mail: overrides.mail ?? defaultMailPort(),
   };

@@ -216,6 +216,51 @@ export async function strapiMutateJson<T>(
 
 
 
+/**
+ * Upload a file to Strapi Media Library (server-side).
+ * Prefers API token; falls back to member JWT when provided.
+ */
+export async function strapiUploadFile(
+  config: StrapiClientConfig,
+  input: { bytes: Uint8Array; fileName: string; mimeType: string },
+  accessToken?: string | null,
+): Promise<{ id: number; url?: string; name?: string } | null> {
+  const bearer = config.apiToken?.trim() || accessToken?.trim() || "";
+  if (!bearer) return null;
+
+  const form = new FormData();
+  const blob = new Blob([Buffer.from(input.bytes)], {
+    type: input.mimeType || "application/octet-stream",
+  });
+  form.append("files", blob, input.fileName || "upload");
+
+  const url = `${config.baseUrl}/api/upload`;
+  let response: Response;
+  try {
+    response = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${bearer}`,
+      },
+      body: form,
+      cache: "no-store",
+    });
+  } catch {
+    return null;
+  }
+
+  if (!response.ok) return null;
+
+  const payload = (await response.json()) as
+    | Array<{ id?: number; url?: string; name?: string }>
+    | { id?: number; url?: string; name?: string }
+    | null;
+
+  const file = Array.isArray(payload) ? payload[0] : payload;
+  if (!file?.id || typeof file.id !== "number") return null;
+  return { id: file.id, url: file.url, name: file.name };
+}
+
 /** Absolute media URL when Strapi returns a relative `/uploads/...` path. */
 
 export function absolutizeMediaUrl(

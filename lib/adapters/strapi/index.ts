@@ -28,5 +28,6 @@ export {
   strapiAuthRequest,
   strapiFetchJson,
   strapiMutateJson,
+  strapiUploadFile,
 } from "./client";
 export type { StrapiClientConfig } from "./client";

@@ -1,0 +1,58 @@
+{
+  "kind": "collectionType",
+  "collectionName": "community_dues",
+  "info": {
+    "singularName": "community-due",
+    "pluralName": "community-dues",
+    "displayName": "Community Due",
+    "description": "Member community dues payments (DuesPort) — separate from donations."
+  },
+  "options": {
+    "draftAndPublish": false
+  },
+  "pluginOptions": {},
+  "attributes": {
+    "memberId": {
+      "type": "string",
+      "required": true
+    },
+    "email": {
+      "type": "email",
+      "required": true
+    },
+    "status": {
+      "type": "enumeration",
+      "enum": ["pending", "paid"],
+      "required": true
+    },
+    "method": {
+      "type": "enumeration",
+      "enum": ["card", "bank_transfer"],
+      "required": true
+    },
+    "periodStartedAt": {
+      "type": "datetime",
+      "required": true
+    },
+    "amountGbp": {
+      "type": "decimal",
+      "required": true,
+      "default": 20
+    },
+    "stripeSessionId": {
+      "type": "string"
+    },
+    "receiptFileName": {
+      "type": "string"
+    },
+    "receiptMimeType": {
+      "type": "string"
+    },
+    "receipt": {
+      "type": "media",
+      "multiple": false,
+      "required": false,
+      "allowedTypes": ["images", "files"]
+    }
+  }
+}

@@ -237,15 +237,6 @@ export function createFileDuesAdapter(
   };
 }
 
-export function createDuesAdapterFromEnv(
-  env: NodeJS.ProcessEnv = process.env,
-): DuesPort {
-  if (env.DUES_ADAPTER?.trim().toLowerCase() === "noop") {
-    return createNoopDuesAdapter();
-  }
-  return createFileDuesAdapter({ env });
-}
-
 export function createNoopDuesAdapter(): DuesPort {
   return {
     async getStatusForMember(memberId, email) {

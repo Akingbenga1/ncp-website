@@ -113,7 +113,7 @@ export function Footer() {
                   className="transition-colors hover:text-brand-mint"
                   href="/dues"
                 >
-                  Pay Dues
+                  Dues
                 </Link>
               </li>
               <li>

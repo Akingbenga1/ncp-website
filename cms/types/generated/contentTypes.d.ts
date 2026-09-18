@@ -443,6 +443,49 @@ export interface AdminUser extends Struct.CollectionTypeSchema {
   };
 }
 
+export interface ApiCommunityDueCommunityDue
+  extends Struct.CollectionTypeSchema {
+  collectionName: 'community_dues';
+  info: {
+    description: 'Member community dues payments (DuesPort) \u2014 separate from donations.';
+    displayName: 'Community Due';
+    pluralName: 'community-dues';
+    singularName: 'community-due';
+  };
+  options: {
+    draftAndPublish: false;
+  };
+  attributes: {
+    amountGbp: Schema.Attribute.Decimal &
+      Schema.Attribute.Required &
+      Schema.Attribute.DefaultTo<20>;
+    createdAt: Schema.Attribute.DateTime;
+    createdBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+    email: Schema.Attribute.Email & Schema.Attribute.Required;
+    locale: Schema.Attribute.String & Schema.Attribute.Private;
+    localizations: Schema.Attribute.Relation<
+      'oneToMany',
+      'api::community-due.community-due'
+    > &
+      Schema.Attribute.Private;
+    memberId: Schema.Attribute.String & Schema.Attribute.Required;
+    method: Schema.Attribute.Enumeration<['card', 'bank_transfer']> &
+      Schema.Attribute.Required;
+    periodStartedAt: Schema.Attribute.DateTime & Schema.Attribute.Required;
+    publishedAt: Schema.Attribute.DateTime;
+    receipt: Schema.Attribute.Media<'images' | 'files'>;
+    receiptFileName: Schema.Attribute.String;
+    receiptMimeType: Schema.Attribute.String;
+    status: Schema.Attribute.Enumeration<['pending', 'paid']> &
+      Schema.Attribute.Required;
+    stripeSessionId: Schema.Attribute.String;
+    updatedAt: Schema.Attribute.DateTime;
+    updatedBy: Schema.Attribute.Relation<'oneToOne', 'admin::user'> &
+      Schema.Attribute.Private;
+  };
+}
+
 export interface ApiEventEvent extends Struct.CollectionTypeSchema {
   collectionName: 'events';
   info: {
@@ -1079,6 +1122,7 @@ declare module '@strapi/strapi' {
       'admin::transfer-token': AdminTransferToken;
       'admin::transfer-token-permission': AdminTransferTokenPermission;
       'admin::user': AdminUser;
+      'api::community-due.community-due': ApiCommunityDueCommunityDue;
       'api::event.event': ApiEventEvent;
       'api::listing.listing': ApiListingListing;
       'api::news-article.news-article': ApiNewsArticleNewsArticle;
